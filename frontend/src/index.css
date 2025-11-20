@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@utility scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Browser automatic color-scheme media queries are disabled because
+ * Theme switching is handled by custom ThemeProvider component */
+
+:root {
+  /* color-scheme: light dark; */
+  /* @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+  }
+
+  @media (prefers-color-scheme: light) {
+    color-scheme: light;
+  } */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@theme {
+  --font-sans: Inter, Roboto, system-ui, sans-serif;
+  --font-special: "Playfair Display", serif;
+  --font-serif: "Noto Serif", Georgia, "Times New Roman", serif;
+  --font-mono: Consolas, "Courier New", monospace;
+
+  --color-black-50: #f6f6f6;
+  --color-black-100: #e7e7e7;
+  --color-black-200: #d1d1d1;
+  --color-black-300: #b0b0b0;
+  --color-black-400: #888888;
+  --color-black-500: #6d6d6d;
+  --color-black-600: #5d5d5d;
+  --color-black-700: #4f4f4f;
+  --color-black-800: #454545;
+  --color-black-900: #3d3d3d;
+
+  --animate-carousal: carousal 40s linear infinite;
+}
+
+@keyframes carousal {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.group:hover .animate-carousal {
+  animation-play-state: paused;
+}
+
+@media (max-width: 640px) {
+  .animate-carousal {
+    animation-duration: 30s;
+  }
+}
+
+/* Swiper carousal customization */
+.continuous-swiper .swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+.content-section-continuous-swiper .swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+
+/* Swiper navigation customization */
+.swiper-nav .swiper-navigation-icon,
+.swiper-nav .swiper-navigation-icon {
+  /* color: #ffffff !important; */
+  fill-opacity: 0.5;
+}
+
+/* Swiper pagination customization */
+.swiper-pagination-bullet {
+  background-color: #f6f6f6 !important;
+}
+.swiper-pagination-bullet-active-main {
+  /* background-color: #ffffff !important; */
+  opacity: 0.7 !important;
+}
+
+/* Light mode (default) */
+.light {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f6f6f6;
+  --text-primary: #000000;
+  --text-secondary: #4f4f4f;
+  --border-color: #d1d1d1;
+  --swiper-theme-color: #ffffff !important;
+}
+
+/* Dark mode */
+.dark {
+  --bg-primary: #000000;
+  --bg-secondary: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border-color: #4f4f4f;
+  --swiper-theme-color: #ffffff !important;
+}
