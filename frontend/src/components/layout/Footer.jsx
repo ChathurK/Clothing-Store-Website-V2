@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  YoutubeLogoIcon,
-  InstagramLogoIcon,
-  FacebookLogoIcon,
-  TiktokLogoIcon,
-  PaperPlaneRightIcon,
-} from "@phosphor-icons/react";
+import { PaperPlaneRightIcon } from "@phosphor-icons/react";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -17,17 +11,6 @@ const Footer = () => {
     setEmail("");
   };
 
-  const socialLinks = [
-    { icon: YoutubeLogoIcon, url: "https://youtube.com", label: "YouTube" },
-    {
-      icon: InstagramLogoIcon,
-      url: "https://instagram.com",
-      label: "Instagram",
-    },
-    { icon: FacebookLogoIcon, url: "https://facebook.com", label: "Facebook" },
-    { icon: TiktokLogoIcon, url: "https://tiktok.com", label: "TikTok" },
-  ];
-
   return (
     <footer className="bg-black-50 dark:bg-black">
       {/* Newsletter Section */}
@@ -37,7 +20,7 @@ const Footer = () => {
             <h2 className="font-special mb-3 text-[28px] font-bold text-black sm:text-3xl md:text-4xl dark:text-white">
               Subscribe to Our Newsletter
             </h2>
-            <p className="text-black-600 dark:text-black-400 mb-8 max-w-2xl font-serif text-base md:text-lg">
+            <p className="text-black-600 dark:text-black-400 mb-8 max-w-2xl font-serif text-base text-balance md:text-lg">
               Stay updated with our latest collections, exclusive offers, and
               fashion insights delivered straight to your inbox.
             </p>
@@ -45,7 +28,7 @@ const Footer = () => {
             {/* Newsletter Form */}
             <form
               onSubmit={handleSubscribe}
-              className="flex w-full max-w-md flex-col gap-3 sm:flex-row"
+              className="relative flex w-full max-w-md flex-col gap-3 sm:flex-row"
             >
               <input
                 name="email"
@@ -55,16 +38,14 @@ const Footer = () => {
                 placeholder="Enter your email"
                 required
                 autoComplete="email"
-                className="border-black-300 placeholder-black-500 dark:border-black-700 dark:placeholder-black-500 flex-1 border bg-transparent px-4 py-3 font-serif text-black transition-colors outline-none focus:border-black dark:text-white dark:focus:border-white"
-              >
-                
-              </input>
+                className="border-black-300 placeholder-black-500 dark:border-black-700 dark:bg-black-300/20 w-full border py-3 pr-36 pl-4 font-serif text-black transition-colors outline-none focus:border-black sm:h-12 sm:placeholder:text-sm dark:text-white dark:focus:border-white"
+              />
               <button
                 type="submit"
-                className="group relative flex items-center justify-center gap-2 overflow-hidden bg-black px-6 py-3 font-semibold text-white transition-all hover:-translate-y-1 hover:shadow-[0px_6px_0px_-2px_rgba(0,0,0,0.2)] active:-translate-y-1 active:shadow-[0px_6px_0px_-2px_rgba(0,0,0,0.2)] dark:bg-white dark:text-black dark:hover:shadow-[0px_6px_0px_-2px_rgba(255,255,255,0.3)] dark:active:shadow-[0px_6px_0px_-2px_rgba(255,255,255,0.3)]"
+                className="dark:border-black-700 flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden border bg-black px-4 py-3 font-serif font-semibold text-white transition-all duration-300 hover:bg-transparent hover:text-black active:bg-transparent active:text-black sm:absolute sm:top-1/2 sm:right-2 sm:w-fit sm:-translate-y-1/2 sm:px-3 sm:py-2 sm:text-xs sm:hover:bg-transparent dark:text-white dark:hover:border-white dark:hover:text-white dark:active:border-white dark:active:text-white sm:dark:hover:bg-black"
               >
                 Subscribe Now
-                <PaperPlaneRightIcon size={20} weight="bold" />
+                <PaperPlaneRightIcon weight="bold" />
               </button>
             </form>
           </div>

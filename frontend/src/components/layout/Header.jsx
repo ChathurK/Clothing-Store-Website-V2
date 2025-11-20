@@ -63,13 +63,14 @@ const Header = () => {
     const handleClickOutside = () => {
       setShowCartDropdown(false);
       setShowProfileDropdown(false);
+      setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
-    if (showCartDropdown || showProfileDropdown) {
+    if (showCartDropdown || showProfileDropdown || isMobileMenuOpen) {
       document.addEventListener("click", handleClickOutside);
       return () => document.removeEventListener("click", handleClickOutside);
     }
-  }, [showCartDropdown, showProfileDropdown]);
+  }, [showCartDropdown, showProfileDropdown, isMobileMenuOpen]);
 
   const handleCartClick = (e) => {
     e.stopPropagation();
@@ -83,6 +84,13 @@ const Header = () => {
     setShowCartDropdown(false);
   };
 
+  const handleMenuToggle = (e) => {
+    e.stopPropagation();
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setShowCartDropdown(false);
+    setShowProfileDropdown(false);
+  };
+
   return (
     <header
       className={`fixed top-0 right-0 left-0 z-50 bg-white/60 backdrop-blur-xs transition-all duration-500 dark:bg-black/60 ${
@@ -90,7 +98,7 @@ const Header = () => {
       }`}
     >
       <div className="dark:border-b-black-300 mx-auto border-b">
-        <div className="flex h-16 items-center justify-between md:h-20">
+        <div className="flex h-16 items-center justify-between sm:h-12">
           {/* Left: Social Links (Desktop Only) */}
           <div className="hidden h-full md:flex">
             {socialLinks.map((social, index) => (
@@ -100,7 +108,7 @@ const Header = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="text-black-700 dark:text-black-300 flex size-full w-16 items-center justify-center border-r transition-colors hover:bg-black hover:text-white md:w-20 dark:hover:bg-white dark:hover:text-black"
+                className="text-black-700 dark:text-black-300 flex size-full w-16 items-center justify-center border-r transition-colors hover:bg-black hover:text-white md:w-12 dark:hover:bg-white dark:hover:text-black"
               >
                 <social.icon size={20} />
               </a>
@@ -111,8 +119,14 @@ const Header = () => {
           <div className="shrink-0 md:absolute md:left-1/2 md:-translate-x-1/2">
             <a href="/" className="block">
               <picture>
-                <source srcSet={`${import.meta.env.BASE_URL}logo_black.avif`} type="image/avif" />
-                <source srcSet={`${import.meta.env.BASE_URL}logo_black.webp`} type="image/webp" />
+                <source
+                  srcSet={`${import.meta.env.BASE_URL}logo_black.avif`}
+                  type="image/avif"
+                />
+                <source
+                  srcSet={`${import.meta.env.BASE_URL}logo_black.webp`}
+                  type="image/webp"
+                />
                 <img
                   src={`${import.meta.env.BASE_URL}logo_black.png`}
                   alt="Logo"
@@ -127,7 +141,7 @@ const Header = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="group dark:border-l-black-300 flex h-full w-16 cursor-pointer items-center justify-center border-l transition-colors hover:bg-black md:w-20 dark:hover:bg-white"
+              className="group dark:border-l-black-300 flex h-full w-16 cursor-pointer items-center justify-center border-l transition-colors hover:bg-black md:w-12 dark:hover:bg-white"
               aria-label="Toggle theme"
             >
               {theme === "light" ? (
@@ -144,7 +158,7 @@ const Header = () => {
             </button>
 
             {/* Cart */}
-            <div className="dark:border-l-black-300 relative h-full w-16 border-l md:w-20">
+            <div className="dark:border-l-black-300 relative h-full w-16 border-l md:w-12">
               <button
                 onClick={handleCartClick}
                 className="group relative flex size-full cursor-pointer items-center justify-center transition-colors hover:bg-black dark:hover:bg-white"
@@ -183,7 +197,7 @@ const Header = () => {
             </div>
 
             {/* Profile */}
-            <div className="dark:border-l-black-300 relative h-full w-16 border-l md:w-20">
+            <div className="dark:border-l-black-300 relative h-full w-16 border-l md:w-12">
               <button
                 onClick={handleProfileClick}
                 className="group flex size-full cursor-pointer items-center justify-center transition-colors hover:bg-black dark:hover:bg-white"
@@ -221,7 +235,7 @@ const Header = () => {
           {/* Mobile Right Side: Cart, Profile, Menu */}
           <div className="flex h-full md:hidden">
             {/* Cart (Mobile) */}
-            <div className="dark:border-l-black-300 relative h-full w-16 border-l">
+            <div className="dark:border-l-black-300 relative h-full w-16 border-l sm:w-12">
               <button
                 onClick={handleCartClick}
                 className="group relative flex size-full cursor-pointer items-center justify-center transition-colors hover:bg-black active:bg-black dark:hover:bg-white dark:active:bg-white"
@@ -240,7 +254,7 @@ const Header = () => {
             </div>
 
             {/* Profile (Mobile) */}
-            <div className="dark:border-l-black-300 relative h-full w-16 border-l">
+            <div className="dark:border-l-black-300 relative h-full w-16 border-l sm:w-12">
               <button
                 onClick={handleProfileClick}
                 className="group flex size-full cursor-pointer items-center justify-center transition-colors hover:bg-black active:bg-black dark:hover:bg-white dark:active:bg-white"
@@ -255,8 +269,8 @@ const Header = () => {
 
             {/* Menu Toggle */}
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="group dark:border-l-black-300 flex w-16 items-center justify-center border-l transition-colors hover:bg-black active:bg-black dark:hover:bg-white dark:active:bg-white"
+              onClick={handleMenuToggle}
+              className="group dark:border-l-black-300 flex w-16 items-center justify-center border-l transition-colors hover:bg-black active:bg-black sm:w-12 dark:hover:bg-white dark:active:bg-white"
               aria-label="Menu"
             >
               {isMobileMenuOpen ? (
@@ -282,13 +296,13 @@ const Header = () => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="dark:border-black-500 border-b-black-200 border-b md:hidden"
+            className="dark:border-b-black-300 border-b border-b-black md:hidden"
           >
             <div className="space-y-4 px-4 py-4">
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
-                className="dark:bg-black-800 group flex w-full cursor-pointer items-center space-x-3 border p-2 shadow-[1px_1px_0px_rgba(0,0,0,0.8)] transition-colors hover:bg-black active:bg-black dark:hover:bg-white dark:active:bg-white"
+                className="group dark:border-black-300 flex w-full cursor-pointer items-center space-x-3 border p-2 transition-colors hover:bg-black active:bg-black dark:hover:bg-white dark:active:bg-white"
               >
                 {theme === "light" ? (
                   <>
@@ -314,7 +328,7 @@ const Header = () => {
               </button>
 
               {/* Social Links */}
-              <div className="border-black-200 dark:border-black-500 border-t pt-4">
+              <div className="border-black-500 dark:border-black-500 border-t pt-4">
                 <p className="text-black-600 dark:text-black-300 mb-3 text-xs font-medium">
                   Follow Us
                 </p>

@@ -88,7 +88,10 @@ const HeroSection = () => {
   // }, [hideControlsTimeout]);
 
   return (
-    <section id="hero" className="relative h-[calc(50vh-32px)] w-full overflow-hidden bg-black md:h-[calc(75vh-80px)]">
+    <section
+      id="hero"
+      className="relative h-[calc(50vh-32px)] w-full overflow-hidden bg-black sm:h-[calc(75vh-48px)] xl:h-[calc(100vh-48px)]"
+    >
       {/* Video Player */}
       <ReactPlayer
         ref={playerRef}
@@ -120,8 +123,14 @@ const HeroSection = () => {
       {showLogo && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/25 dark:bg-black/25">
           <picture>
-            <source srcset={`${import.meta.env.BASE_URL}logo_black.avif`} type="image/avif" />
-            <source srcset={`${import.meta.env.BASE_URL}logo_black.webp`} type="image/webp" />
+            <source
+              srcset={`${import.meta.env.BASE_URL}logo_black.avif`}
+              type="image/avif"
+            />
+            <source
+              srcset={`${import.meta.env.BASE_URL}logo_black.webp`}
+              type="image/webp"
+            />
             <img
               src={`${import.meta.env.BASE_URL}logo_black.png`}
               alt="Brand Logo"
