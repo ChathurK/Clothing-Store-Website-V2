@@ -6,6 +6,7 @@ import CTASectionPrimary from "../components/landing/CTASectionPrimary";
 import CarousalSection from "../components/landing/CarousalSection";
 import CTASectionSecondary from "../components/landing/CTASectionSecondary";
 import ScrollerToTopBtn from "../components/common/ScrollerToTopBtn";
+import ContentSectionOne from "../components/landing/ContentSectionOne";
 
 const Landing = () => {
   return (
@@ -16,6 +17,7 @@ const Landing = () => {
         <CTASectionPrimary />
         <CarousalSection />
         <CTASectionSecondary />
+        {/* <ContentSectionOne/> */}
       </main>
       <Footer />
       <ScrollerToTopBtn />

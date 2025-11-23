@@ -2,7 +2,7 @@ const CTASectionPrimary = () => {
   return (
     <section
       id="cta-primary"
-      className="flex h-[calc(50vh-32px)] items-center bg-white py-16 sm:h-[calc(25vh)] md:py-20 lg:h-auto lg:py-16 dark:bg-black"
+      className="flex h-[calc(50vh-32px)] items-center bg-white py-16 sm:h-[25vh] md:py-20 lg:h-auto xl:h-[268px] lg:py-16 dark:bg-black"
     >
       <div className="mx-auto flex max-w-7xl flex-col items-center px-4 text-center">
         {/* Quote */}
