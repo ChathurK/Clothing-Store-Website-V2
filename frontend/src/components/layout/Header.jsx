@@ -35,15 +35,26 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
+      const headerHeight = document.getElementsByTagName('header')[0].offsetHeight;
+      const ctaSectionOffsetTop = document.getElementById("cta-primary").offsetTop;
       const currentScrollY = window.scrollY;
-      // console.log('current-', currentScrollY) // Debug log
-      // console.log('last-', lastScrollY) // Debug log
+      /* Debug logs */
+      // console.group();
+      // console.log("headerHeight-", headerHeight);
+      // console.log("ctaSectionOffsetTop-", ctaSectionOffsetTop);
+      // console.log("current-", currentScrollY);
+      // console.log("last-", lastScrollY);
+      // console.groupEnd();
+      /* Debug group end */
 
       // Check if scrolled more than 100px
       setIsScrolled(currentScrollY > 100);
 
       // Show/hide header based on scroll direction
-      if (currentScrollY > lastScrollY && currentScrollY > 500) {
+      if (
+        currentScrollY > lastScrollY &&
+        currentScrollY > ctaSectionOffsetTop - headerHeight
+      ) {
         // Scrolling down
         setIsVisible(false);
       } else {

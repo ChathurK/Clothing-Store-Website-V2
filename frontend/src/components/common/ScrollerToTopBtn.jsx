@@ -22,11 +22,13 @@ const ScrollerToTopBtn = () => {
 
   useEffect(() => {
     const handleScroll = () => {
+      const carousalOffsetTop = document.getElementById("carousel").offsetTop;
       const currentScrollY = window.scrollY;
+      // console.log(carousalOffsetTop)
       // console.log(currentScrollY);
 
-      // Show button if scrolled past 1000 pixels
-      if (currentScrollY >= 1000) {
+      // Show button if scrolled past the carousel section
+      if (currentScrollY >= carousalOffsetTop) {
         setIsVisible(true);
       } else {
         setIsVisible(false);

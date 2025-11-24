@@ -4,7 +4,7 @@ const CTASectionPrimary = () => {
       id="cta-primary"
       className="flex h-[calc(50vh-32px)] items-center bg-white py-16 sm:h-[25vh] md:py-20 lg:h-auto xl:h-[268px] lg:py-16 dark:bg-black"
     >
-      <div className="mx-auto flex max-w-7xl flex-col items-center px-4 text-center">
+      <div className="mx-auto flex max-w-7xl flex-col items-center px-4 md:text-center">
         {/* Quote */}
         <h2 className="text-black-700 dark:text-black-300 mb-8 text-3xl font-normal text-balance md:text-4xl lg:text-5xl">
           Don't wear to{" "}

@@ -5,7 +5,7 @@ const CTASectionSecondary = () => {
       className="relative flex min-h-[60vh] items-center overflow-hidden bg-black py-16 md:min-h-[70vh] md:py-20 lg:py-24 dark:bg-[#0d0d0d]"
     >
       {/* Content */}
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-center px-4 text-center">
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-center px-4 md:text-center">
         {/* Quote */}
         <h2 className="mb-8 text-2xl text-balance text-white md:text-3xl lg:text-4xl">
           <span className="font-semibold">
