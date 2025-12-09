@@ -9,6 +9,7 @@ const ParallaxSection = () => {
     >
       {[...Array(7)].map((_, index) => (
         <ParallaxComponent
+          key={index}
           image1Src={`https://picsum.photos/1920/1080?random=${index}`}
           image2Src={`https://picsum.photos/1920/1080?random=${index}.1`}
           leftLarge={index % 2 === 0}
