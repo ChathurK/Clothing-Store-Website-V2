@@ -138,11 +138,11 @@ const CarousalSection = () => {
               <div className="absolute top-0 left-0 h-full w-screen">
                 <picture>
                   <source
-                    srcset={images[activeIndex].srcAvif}
+                    srcSet={images[activeIndex].srcAvif}
                     type="image/avif"
                   />
                   <source
-                    srcset={images[activeIndex].srcWebp}
+                    srcSet={images[activeIndex].srcWebp}
                     type="image/webp"
                   />
                   <img

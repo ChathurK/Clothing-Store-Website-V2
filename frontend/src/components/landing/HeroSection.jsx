@@ -22,7 +22,19 @@ const HeroSection = () => {
   const videoElementRef = useRef(null);
 
   // Video url
-  const videoUrl = "https://youtu.be/CHSnz0bCaUk?si=N5zuFzijbGMQ6qHl";
+  const videoId = "CHSnz0bCaUk";
+  const urlParams = new URLSearchParams({
+    autoplay: 1,
+    mute: muted ? 1 : 0,
+    loop: 1,
+    playlist: videoId,
+    controls: 1,
+    rel: 1,
+  }).toString();
+  const youtubeUrl = `https://www.youtube.com/embed/${videoId}?${urlParams}`
+  // console.log(urlParams)
+  // console.log(youtubeUrl)
+  const videoUrl = "https://youtu.be/CHSnz0bCaUk?list=TLGGdfA05tR7pZYwOTEyMjAyNQ";
   // const videoUrl = "/videos/Monarch_ Legacy_of_Monsters_Season_2.mp4";
   // const videoUrl = "/videos/Nothing_Beats_a_Jet2holiday.webm";
 
@@ -93,7 +105,7 @@ const HeroSection = () => {
       className="relative h-[calc(50vh-32px)] w-full overflow-hidden bg-black sm:h-[calc(75vh-48px)] xl:h-[calc(100vh-48px)]"
     >
       {/* Video Player */}
-      <ReactPlayer
+      {/* <ReactPlayer
         ref={playerRef}
         src={videoUrl}
         playing={true}
@@ -114,7 +126,16 @@ const HeroSection = () => {
         //     disablePictureInPicture: true,
         //   },
         // }}
-      />
+      /> */}
+      <iframe
+        width="100%"
+        height="100%"
+        src={youtubeUrl}
+        title="Alaska in 8K 60p HDR  (Dolby Vision)"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      ></iframe>
 
       {/* Dark Overlay */}
       {/* <div className="absolute inset-0 bg-black/30" /> */}
@@ -124,11 +145,11 @@ const HeroSection = () => {
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/25 dark:bg-black/25">
           <picture>
             <source
-              srcset={`${import.meta.env.BASE_URL}logo_black.avif`}
+              srcSet={`${import.meta.env.BASE_URL}logo_black.avif`}
               type="image/avif"
             />
             <source
-              srcset={`${import.meta.env.BASE_URL}logo_black.webp`}
+              srcSet={`${import.meta.env.BASE_URL}logo_black.webp`}
               type="image/webp"
             />
             <img
