@@ -1,5 +1,47 @@
 @import "tailwindcss";
 
+/* ============================================
+   LENIS SMOOTH SCROLL - RECOMMENDED STYLES
+   ============================================
+   
+   These styles are essential for Lenis to work properly:
+   
+   1. html.lenis, html.lenis body - Prevents default scroll behavior
+      - height: 100% ensures proper scroll container
+      
+   2. .lenis.lenis-smooth - Applied when smooth scrolling is active
+      - scroll-behavior: auto prevents conflicts with CSS smooth-scroll
+      
+   3. .lenis.lenis-smooth [data-lenis-prevent] - Allows nested scrolling
+      - overscroll-behavior: contain prevents parent scroll
+      
+   4. .lenis.lenis-stopped - Applied when scroll is programmatically stopped
+      - overflow: hidden completely prevents scrolling
+      
+   5. .lenis.lenis-scrolling - Applied during active scrolling
+      - pointer-events: none (optional) prevents interference during scroll
+*/
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @utility scrollbar-hidden {

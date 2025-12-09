@@ -22,7 +22,10 @@ const ScrollerToTopBtn = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const carousalOffsetTop = document.getElementById("carousel").offsetTop;
+      const carousalElement = document.getElementById("carousel");
+      if (!carousalElement) return;
+
+      const carousalOffsetTop = carousalElement.offsetTop;
       const currentScrollY = window.scrollY;
       // console.log(carousalOffsetTop)
       // console.log(currentScrollY);
