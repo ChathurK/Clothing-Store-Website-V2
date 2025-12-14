@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   SunIcon,
   MoonStarsIcon,
@@ -17,7 +18,7 @@ import { useTheme } from "../../context/ThemeContext";
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
-  const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -35,8 +36,8 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const headerHeight = document.getElementsByTagName('header')[0].offsetHeight;
-      const ctaSectionOffsetTop = document.getElementById("cta-primary").offsetTop;
+      const headerHeight = document.getElementsByTagName("header")[0].offsetHeight;
+      const ctaSectionOffsetTop = document.getElementById("cta-primary")?.offsetTop;
       const currentScrollY = window.scrollY;
       /* Debug logs */
       // console.group();
@@ -47,13 +48,11 @@ const Header = () => {
       // console.groupEnd();
       /* Debug group end */
 
-      // Check if scrolled more than 100px
-      setIsScrolled(currentScrollY > 100);
-
       // Show/hide header based on scroll direction
       if (
         currentScrollY > lastScrollY &&
-        currentScrollY > ctaSectionOffsetTop - headerHeight
+        (currentScrollY > ctaSectionOffsetTop - headerHeight ||
+          currentScrollY > 3 * headerHeight)
       ) {
         // Scrolling down
         setIsVisible(false);
@@ -74,7 +73,7 @@ const Header = () => {
     const handleClickOutside = () => {
       setShowCartDropdown(false);
       setShowProfileDropdown(false);
-      setIsMobileMenuOpen(!isMobileMenuOpen);
+      setIsMobileMenuOpen(false);
     };
 
     if (showCartDropdown || showProfileDropdown || isMobileMenuOpen) {
@@ -128,23 +127,23 @@ const Header = () => {
 
           {/* Center: Logo */}
           <div className="shrink-0 md:absolute md:left-1/2 md:-translate-x-1/2">
-            <a href="/" className="block">
+            <Link to="/" className="block">
               <picture>
                 <source
-                  srcSet={`${import.meta.env.BASE_URL}logo_black.avif`}
+                  srcSet={`${import.meta.env.BASE_URL}/logo_black.avif`}
                   type="image/avif"
                 />
                 <source
-                  srcSet={`${import.meta.env.BASE_URL}logo_black.webp`}
+                  srcSet={`${import.meta.env.BASE_URL}/logo_black.webp`}
                   type="image/webp"
                 />
                 <img
-                  src={`${import.meta.env.BASE_URL}logo_black.png`}
+                  src={`${import.meta.env.BASE_URL}/logo_black.png`}
                   alt="Logo"
                   className="h-8 w-auto text-black md:h-10 dark:text-white"
                 />
               </picture>
-            </a>
+            </Link>
           </div>
 
           {/* Right: Theme Toggle, Cart, Profile (Desktop) */}
@@ -198,7 +197,10 @@ const Header = () => {
                       <p className="text-black-600 mb-3 text-sm dark:text-white">
                         Please login to view cart
                       </p>
-                      <button className="hover:bg-black-800 dark:hover:bg-black-100 w-full cursor-pointer bg-black px-4 py-2 font-medium text-white transition-colors dark:bg-white dark:text-black">
+                      <button
+                        onClick={() => navigate("/auth")}
+                        className="hover:bg-black-800 dark:hover:bg-black-100 w-full cursor-pointer bg-black px-4 py-2 font-medium text-white transition-colors dark:bg-white dark:text-black"
+                      >
                         Login
                       </button>
                     </div>
@@ -234,7 +236,10 @@ const Header = () => {
                       </button>
                     </div>
                   ) : (
-                    <button className="hover:bg-black-800 dark:hover:bg-black-100 w-full cursor-pointer bg-black px-4 py-2 font-medium text-white transition-colors dark:bg-white dark:text-black">
+                    <button
+                      onClick={() => navigate("/auth")}
+                      className="hover:bg-black-800 dark:hover:bg-black-100 w-full cursor-pointer bg-black px-4 py-2 font-medium text-white transition-colors dark:bg-white dark:text-black"
+                    >
                       Login
                     </button>
                   )}
@@ -300,6 +305,53 @@ const Header = () => {
         </div>
       </div>
 
+      {/* Mobile Cart Dropdown */}
+      {showCartDropdown && (
+        <div className="dark:bg-black-900 dark:border-black-300 absolute top-20 right-4 w-64 border bg-white p-4 shadow-lg md:hidden">
+          {isLoggedIn ? (
+            <p className="text-black-600 text-sm dark:text-white">
+              Your cart is empty
+            </p>
+          ) : (
+            <div className="text-center">
+              <p className="text-black-600 mb-3 text-sm dark:text-white">
+                Please login to view cart
+              </p>
+              <button
+                onClick={() => navigate("/auth")}
+                className="hover:bg-black-800 active:bg-black-800 dark:hover:bg-black-100 dark:active:bg-black-100 w-full cursor-pointer bg-black px-4 py-2 font-medium text-white transition-colors dark:bg-white dark:text-black"
+              >
+                Login
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Mobile Profile Dropdown */}
+      {showProfileDropdown && (
+        <div className="dark:bg-black-900 dark:border-black-300 absolute top-20 right-4 w-48 border bg-white p-4 shadow-lg md:hidden">
+          {isLoggedIn ? (
+            <div>
+              <p className="mb-2 text-sm font-medium">John Doe</p>
+              <button className="text-black-600 dark:text-black-400 w-full py-1 text-left text-sm hover:text-black active:text-black dark:hover:text-white dark:active:text-white">
+                Profile
+              </button>
+              <button className="text-black-600 dark:text-black-400 w-full py-1 text-left text-sm hover:text-black active:text-black dark:hover:text-white dark:active:text-white">
+                Logout
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => navigate("/auth")}
+              className="hover:bg-black-800 active:bg-black-800 dark:active:bg-black-100 dark:hover:bg-black-100 w-full cursor-pointer bg-black px-4 py-2 font-medium text-white transition-colors dark:bg-white dark:text-black"
+            >
+              Login
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Mobile Menu Dropdown */}
       <AnimatePresence mode="wait">
         {isMobileMenuOpen && (
@@ -310,10 +362,28 @@ const Header = () => {
             className="dark:border-b-black-300 border-b border-b-black md:hidden"
           >
             <div className="space-y-4 px-4 py-4">
+              {/* Navigation Links */}
+              <div className="space-y-2">
+                <Link
+                  to="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="dark:border-black-300 text-black-700 dark:text-black-300 block w-full cursor-pointer border border-black p-2 text-sm font-medium transition-colors hover:bg-black hover:text-white active:bg-black active:text-white dark:hover:bg-white dark:hover:text-black dark:active:bg-white dark:active:text-black"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/products"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="dark:border-black-300 text-black-700 dark:text-black-300 block w-full cursor-pointer border border-black p-2 text-sm font-medium transition-colors hover:bg-black hover:text-white active:bg-black active:text-white dark:hover:bg-white dark:hover:text-black dark:active:bg-white dark:active:text-black"
+                >
+                  Shop Now
+                </Link>
+              </div>
+
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
-                className="group dark:border-black-300 flex w-full cursor-pointer items-center space-x-3 border p-2 transition-colors hover:bg-black active:bg-black dark:hover:bg-white dark:active:bg-white"
+                className="group dark:border-black-300 flex w-full cursor-pointer items-center space-x-3 border border-black p-2 transition-colors hover:bg-black active:bg-black dark:hover:bg-white dark:active:bg-white"
               >
                 {theme === "light" ? (
                   <>
@@ -362,47 +432,6 @@ const Header = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Mobile Cart Dropdown */}
-      {showCartDropdown && (
-        <div className="dark:bg-black-900 dark:border-black-300 absolute top-20 right-4 w-64 border bg-white p-4 shadow-lg md:hidden">
-          {isLoggedIn ? (
-            <p className="text-black-600 text-sm dark:text-white">
-              Your cart is empty
-            </p>
-          ) : (
-            <div className="text-center">
-              <p className="text-black-600 mb-3 text-sm dark:text-white">
-                Please login to view cart
-              </p>
-              <button className="hover:bg-black-800 active:bg-black-800 dark:hover:bg-black-100 dark:active:bg-black-100 w-full cursor-pointer bg-black px-4 py-2 font-medium text-white transition-colors dark:bg-white dark:text-black">
-                Login
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Mobile Profile Dropdown */}
-      {showProfileDropdown && (
-        <div className="dark:bg-black-900 dark:border-black-300 absolute top-20 right-4 w-48 border bg-white p-4 shadow-lg md:hidden">
-          {isLoggedIn ? (
-            <div>
-              <p className="mb-2 text-sm font-medium">John Doe</p>
-              <button className="text-black-600 dark:text-black-400 w-full py-1 text-left text-sm hover:text-black active:text-black dark:hover:text-white dark:active:text-white">
-                Profile
-              </button>
-              <button className="text-black-600 dark:text-black-400 w-full py-1 text-left text-sm hover:text-black active:text-black dark:hover:text-white dark:active:text-white">
-                Logout
-              </button>
-            </div>
-          ) : (
-            <button className="hover:bg-black-800 active:bg-black-800 dark:active:bg-black-100 dark:hover:bg-black-100 w-full cursor-pointer bg-black px-4 py-2 font-medium text-white transition-colors dark:bg-white dark:text-black">
-              Login
-            </button>
-          )}
-        </div>
-      )}
     </header>
   );
 };

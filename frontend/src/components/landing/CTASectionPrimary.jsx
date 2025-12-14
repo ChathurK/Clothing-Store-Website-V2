@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 const CTASectionPrimary = () => {
+  const navigate = useNavigate();
+  
   return (
     <section
       id="cta-primary"
@@ -17,7 +21,7 @@ const CTASectionPrimary = () => {
         <div className="group relative w-fit">
           <button
             type="button"
-            onClick={() => (window.location.href = "/products")}
+            onClick={() => navigate("/products")}
             className="relative z-10 inline-block cursor-pointer px-8 py-3 text-base font-semibold text-white inset-ring inset-ring-black hover:text-black active:text-black md:px-10 md:py-4 md:text-lg dark:text-black dark:inset-ring-white dark:hover:text-white dark:active:text-white"
           >
             Shop Now
