@@ -118,7 +118,7 @@ const Header = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="text-black-700 dark:text-black-300 flex size-full w-16 items-center justify-center border-r transition-colors hover:bg-black hover:text-white md:w-12 dark:hover:bg-white dark:hover:text-black"
+                className="text-black-700 dark:border-r-black-300 border-r-black dark:text-black-300 flex size-full w-16 items-center justify-center border-r transition-colors hover:bg-black hover:text-white md:w-12 dark:hover:bg-white dark:hover:text-black"
               >
                 <social.icon size={20} />
               </a>

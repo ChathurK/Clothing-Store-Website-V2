@@ -13,10 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<Auth />} />
-            <Route
-              path="/products"
-              element={<Products />}
-            />
+            <Route path="/products" element={<Products />} />
           </Routes>
           <ScreenSizeIndicator />
         </div>

@@ -1,15 +1,43 @@
 import { PaperPlaneRightIcon } from "@phosphor-icons/react";
-import { useState } from "react";
+import { toast } from "react-toastify";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const Footer_Newsletter = () => {
-  const [email, setEmail] = useState("");
+  const emailValidationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+  });
 
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    // Handle newsletter subscription
-    console.log("Subscribe email:", email);
-    setEmail("");
-  };
+  // Newsletter subscription form
+  const newsLetterForm = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: emailValidationSchema,
+    onSubmit: async (values) => {
+      try {
+        console.log("Newsletter Subscribe: ", values);
+        const toast = () =>
+          toast.success("Subscribed to Newsletter Successfully!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: document.documentElement.classList.contains("light")
+              ? "light"
+              : "dark",
+          });
+      } catch (error) {
+        console.error("Newsletter Subscription Failed!", error);
+        toast.error("Newsletter Subscription Failed! Please try again.");
+      }
+    },
+  });
 
   return (
     <div className="border-black-200 dark:border-black-800 border-t py-10 md:py-12 lg:py-14">
@@ -25,18 +53,18 @@ const Footer_Newsletter = () => {
 
           {/* Newsletter Form */}
           <form
-            onSubmit={handleSubscribe}
+            onSubmit={newsLetterForm.handleSubmit}
             className="relative flex w-full max-w-md flex-col gap-3 sm:flex-row"
           >
             <input
               name="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
               placeholder="Enter your email"
               required
-              autoComplete="email"
-              className="border-black-300 placeholder-black-500 dark:border-black-700 dark:bg-black-300/20 w-full border py-3 pr-36 pl-4 font-serif text-black transition-colors outline-none focus:border-black sm:h-12 sm:placeholder:text-sm dark:text-white dark:focus:border-white"
+              className="border-black-300 placeholder-black-500 dark:border-black-700 dark:bg-black-300/20 w-full border py-3 pr-36 pl-4 font-serif text-black transition-colors outline-none placeholder:italic focus:border-black sm:h-12 sm:placeholder:text-sm dark:text-white dark:focus:border-white"
+              value={newsLetterForm.values.email}
+              onChange={newsLetterForm.handleChange}
             />
             <button
               type="submit"

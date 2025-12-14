@@ -30,7 +30,7 @@ const CTASectionSecondary = () => {
             <button
               type="button"
               onClick={() => navigate("/products")}
-              className="relative z-10 cursor-pointer px-8 py-3 text-base font-semibold text-black inset-ring inset-ring-white hover:text-white active:text-white md:px-10 md:py-4 md:text-lg dark:inset-ring-white"
+              className="relative z-10 cursor-pointer px-8 py-3 text-base font-semibold text-black inset-ring inset-ring-white transition-colors duration-300 hover:text-white active:text-white md:px-10 md:py-4 md:text-lg dark:inset-ring-white"
             >
               Shop Now
             </button>
