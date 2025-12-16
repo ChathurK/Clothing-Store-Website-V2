@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   SunIcon,
   MoonStarsIcon,
-  ShoppingCartSimpleIcon,
+  HeartIcon,
   UserCircleIcon,
   ListIcon,
   XIcon,
@@ -16,14 +16,14 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "../../context/ThemeContext";
 
-const Header = () => {
+const ProductsHeader = () => {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showCartDropdown, setShowCartDropdown] = useState(false);
+  const [showFavoriteDropdown, setShowFavoriteDropdown] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [cartCount] = useState(0); // This will be dynamic later
+  const [favoriteCount] = useState(0); // This will be dynamic later
   const [isLoggedIn] = useState(false); // This will be dynamic later
   const lastScrollYRef = useRef(window.scrollY);
 
@@ -35,25 +35,15 @@ const Header = () => {
   ];
 
   useEffect(() => {
+    // const favoriteCountFromStorage = JSON.parse(localStorage.getItem("favorites")||"[]").length;
+    // setFavoriteCount(favoriteCountFromStorage);
+
     const handleScroll = () => {
       const headerHeight = document.getElementsByTagName("header")[0].offsetHeight;
-      const ctaSectionOffsetTop = document.getElementById("cta-primary")?.offsetTop;
       const currentScrollY = window.scrollY;
-      /* Debug logs */
-      // console.group();
-      // console.log("headerHeight-", headerHeight);
-      // console.log("ctaSectionOffsetTop-", ctaSectionOffsetTop);
-      // console.log("current-", currentScrollY);
-      // console.log("last-", lastScrollY);
-      // console.groupEnd();
-      /* Debug group end */
 
       // Show/hide header based on scroll direction
-      if (
-        currentScrollY > lastScrollYRef.current &&
-        (currentScrollY > ctaSectionOffsetTop - headerHeight ||
-          currentScrollY > 3 * headerHeight)
-      ) {
+      if (currentScrollY > lastScrollYRef.current && currentScrollY > headerHeight) {
         // Scrolling down
         setIsVisible(false);
       } else {
@@ -71,33 +61,33 @@ const Header = () => {
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = () => {
-      setShowCartDropdown(false);
+      setShowFavoriteDropdown(false);
       setShowProfileDropdown(false);
       setIsMobileMenuOpen(false);
     };
 
-    if (showCartDropdown || showProfileDropdown || isMobileMenuOpen) {
+    if (showFavoriteDropdown || showProfileDropdown || isMobileMenuOpen) {
       document.addEventListener("click", handleClickOutside);
       return () => document.removeEventListener("click", handleClickOutside);
     }
-  }, [showCartDropdown, showProfileDropdown, isMobileMenuOpen]);
+  }, [showFavoriteDropdown, showProfileDropdown, isMobileMenuOpen]);
 
-  const handleCartClick = (e) => {
+  const handleFavoriteClick = (e) => {
     e.stopPropagation();
-    setShowCartDropdown(!showCartDropdown);
+    setShowFavoriteDropdown(!showFavoriteDropdown);
     setShowProfileDropdown(false);
   };
 
   const handleProfileClick = (e) => {
     e.stopPropagation();
     setShowProfileDropdown(!showProfileDropdown);
-    setShowCartDropdown(false);
+    setShowFavoriteDropdown(false);
   };
 
   const handleMenuToggle = (e) => {
     e.stopPropagation();
     setIsMobileMenuOpen(!isMobileMenuOpen);
-    setShowCartDropdown(false);
+    setShowFavoriteDropdown(false);
     setShowProfileDropdown(false);
   };
 
@@ -107,7 +97,7 @@ const Header = () => {
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      <div className="dark:border-b-black-300 mx-auto border-b">
+      <div className="dark:border-b-black-300 border-b">
         <div className="flex h-16 items-center justify-between sm:h-12">
           {/* Left: Social Links (Desktop Only) */}
           <div className="hidden h-full md:flex">
@@ -118,7 +108,7 @@ const Header = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="text-black-700 dark:border-r-black-300 border-r-black dark:text-black-300 flex size-full w-16 items-center justify-center border-r transition-colors hover:bg-black hover:text-white md:w-12 dark:hover:bg-white dark:hover:text-black"
+                className="text-black-700 dark:border-r-black-300 dark:text-black-300 flex size-full w-16 items-center justify-center border-r border-r-black transition-colors hover:bg-black hover:text-white md:w-12 dark:hover:bg-white dark:hover:text-black"
               >
                 <social.icon size={20} />
               </a>
@@ -146,7 +136,7 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Right: Theme Toggle, Cart, Profile (Desktop) */}
+          {/* Right: Theme Toggle, Favorite, Profile (Desktop) */}
           <div className="hidden h-full md:flex">
             {/* Theme Toggle */}
             <button
@@ -167,35 +157,36 @@ const Header = () => {
               )}
             </button>
 
-            {/* Cart */}
+            {/* Favorite */}
             <div className="dark:border-l-black-300 relative h-full w-16 border-l md:w-12">
               <button
-                onClick={handleCartClick}
+                onClick={handleFavoriteClick}
                 className="group relative flex size-full cursor-pointer items-center justify-center transition-colors hover:bg-black dark:hover:bg-white"
-                aria-label="Shopping cart"
+                aria-label="Favorites"
               >
-                <ShoppingCartSimpleIcon
+                <HeartIcon
                   size={20}
+                  weight={favoriteCount > 0 ? "fill" : "regular"}
                   className="text-black-700 dark:text-black-300 transition-colors group-hover:text-white dark:group-hover:text-black"
                 />
-                {cartCount > 0 && (
+                {favoriteCount > 0 && (
                   <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs font-medium text-white dark:bg-white dark:text-black">
-                    {cartCount}
+                    {favoriteCount}
                   </span>
                 )}
               </button>
 
-              {/* Cart Dropdown */}
-              {showCartDropdown && (
+              {/* Favorite Dropdown */}
+              {showFavoriteDropdown && (
                 <div className="dark:bg-black-900 dark:border-black-300 absolute right-0 mt-2 w-64 border bg-white p-4 shadow-lg">
                   {isLoggedIn ? (
-                    <p className="text-black-600 text-sm dark:text-white">
-                      Your cart is empty
+                    <p className="text-sm text-gray-600 dark:text-white">
+                      Your favorites list is empty
                     </p>
                   ) : (
                     <div className="text-center">
                       <p className="text-black-600 mb-3 text-sm dark:text-white">
-                        Please login to view cart
+                        Please login to view favorites
                       </p>
                       <button
                         onClick={() => navigate("/auth")}
@@ -248,22 +239,23 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Mobile Right Side: Cart, Profile, Menu */}
+          {/* Mobile Right Side: Favorite, Profile, Menu */}
           <div className="flex h-full md:hidden">
-            {/* Cart (Mobile) */}
+            {/* Favorite (Mobile) */}
             <div className="dark:border-l-black-300 relative h-full w-16 border-l sm:w-12">
               <button
-                onClick={handleCartClick}
+                onClick={handleFavoriteClick}
                 className="group relative flex size-full cursor-pointer items-center justify-center transition-colors hover:bg-black active:bg-black dark:hover:bg-white dark:active:bg-white"
-                aria-label="Shopping cart"
+                aria-label="Favorites"
               >
-                <ShoppingCartSimpleIcon
+                <HeartIcon
                   size={20}
+                  weight={favoriteCount > 0 ? "fill" : "regular"}
                   className="text-black-700 dark:text-black-300 transition-colors group-hover:text-white group-active:text-white dark:group-hover:text-black dark:group-active:text-black"
                 />
-                {cartCount > 0 && (
+                {favoriteCount > 0 && (
                   <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs font-medium text-white dark:bg-white dark:text-black">
-                    {cartCount}
+                    {favoriteCount}
                   </span>
                 )}
               </button>
@@ -305,17 +297,17 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Cart Dropdown */}
-      {showCartDropdown && (
+      {/* Mobile Favorite Dropdown */}
+      {showFavoriteDropdown && (
         <div className="dark:bg-black-900 dark:border-black-300 absolute top-20 right-4 w-64 border bg-white p-4 shadow-lg md:hidden">
           {isLoggedIn ? (
-            <p className="text-black-600 text-sm dark:text-white">
-              Your cart is empty
+            <p className="text-sm text-gray-600 dark:text-white">
+              Your favorites list is empty
             </p>
           ) : (
             <div className="text-center">
               <p className="text-black-600 mb-3 text-sm dark:text-white">
-                Please login to view cart
+                Please login to view favorites
               </p>
               <button
                 onClick={() => navigate("/auth")}
@@ -371,13 +363,13 @@ const Header = () => {
                 >
                   Home
                 </Link>
-                <Link
+                {/* <Link
                   to="/products"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="dark:border-black-300 text-black-700 dark:text-black-300 block w-full cursor-pointer border border-black p-2 text-sm font-medium transition-colors hover:bg-black hover:text-white active:bg-black active:text-white dark:hover:bg-white dark:hover:text-black dark:active:bg-white dark:active:text-black"
+                  className="block w-full cursor-pointer border border-gray-300 p-2 text-sm font-medium text-gray-700 transition-colors hover:bg-black hover:text-white active:bg-black active:text-white dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-white dark:hover:text-black dark:active:bg-white dark:active:text-black"
                 >
                   Shop Now
-                </Link>
+                </Link> */}
               </div>
 
               {/* Theme Toggle */}
@@ -436,4 +428,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default ProductsHeader;

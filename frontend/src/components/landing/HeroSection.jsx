@@ -145,15 +145,15 @@ const HeroSection = () => {
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/25 dark:bg-black/25">
           <picture>
             <source
-              srcSet={`${import.meta.env.BASE_URL}logo_black.avif`}
+              srcSet={`${import.meta.env.BASE_URL}/logo_black.avif`}
               type="image/avif"
             />
             <source
-              srcSet={`${import.meta.env.BASE_URL}logo_black.webp`}
+              srcSet={`${import.meta.env.BASE_URL}/logo_black.webp`}
               type="image/webp"
             />
             <img
-              src={`${import.meta.env.BASE_URL}logo_black.png`}
+              src={`${import.meta.env.BASE_URL}/logo_black.png`}
               alt="Brand Logo"
               className="h-auto w-full"
             />
