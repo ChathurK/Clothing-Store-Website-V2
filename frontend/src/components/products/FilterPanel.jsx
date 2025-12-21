@@ -3,13 +3,7 @@ import { XIcon } from "@phosphor-icons/react";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "motion/react";
 
-const FilterPanel = ({
-  isOpen,
-  onClose,
-  filters,
-  onFilterChange,
-  isMobile,
-}) => {
+const FilterPanel = ({ isOpen, onClose, filters, onFilterChange }) => {
   const [priceRange, setPriceRange] = useState(filters.priceRange || [0, 1000]);
 
   const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
@@ -82,18 +76,16 @@ const FilterPanel = ({
           >
             Clear All
           </button>
-          {isMobile && (
-            <button
-              onClick={onClose}
-              className="group flex items-center justify-center border border-gray-300 p-1 transition-colors hover:bg-black dark:border-zinc-700 dark:hover:bg-white"
-              aria-label="Close filters"
-            >
-              <XIcon
-                size={18}
-                className="text-gray-700 transition-colors group-hover:text-white dark:text-zinc-400 dark:group-hover:text-black"
-              />
-            </button>
-          )}
+          <button
+            onClick={onClose}
+            className="group flex items-center justify-center border border-gray-300 p-1 transition-colors hover:bg-black md:hidden dark:border-zinc-700 dark:hover:bg-white"
+            aria-label="Close filters"
+          >
+            <XIcon
+              size={18}
+              className="text-gray-700 transition-colors group-hover:text-white dark:text-zinc-400 dark:group-hover:text-black"
+            />
+          </button>
         </div>
       </div>
 
@@ -197,52 +189,54 @@ const FilterPanel = ({
     </div>
   );
 
-  // Desktop: Side panel
-  if (!isMobile) {
-    return (
-      <AnimatePresence mode="wait">
-        {isOpen && (
-          <motion.div
-            initial={{ x: "-100%", opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: "-100%", opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="h-full w-72 border-r border-r-gray-300 bg-white dark:border-r-zinc-700 dark:bg-black"
-          >
-            <FilterContent />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    );
-  }
-
-  // Mobile: Overlay/popover
   return (
-    <AnimatePresence mode="wait">
-      {isOpen && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 z-50 bg-black/50"
-          />
+    <>
+      <div className="hidden md:block">
+        {/* Desktop: Side panel */}
+        <AnimatePresence mode="wait">
+          {isOpen && (
+            <motion.div
+              initial={{ x: "-100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "-100%", opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="h-full w-72 border-r border-r-gray-300 bg-white dark:border-r-zinc-700 dark:bg-black"
+            >
+              <FilterContent />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
-          {/* Panel */}
-          <motion.div
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -100, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-28 right-4 left-4 z-50 max-h-[70vh] overflow-hidden border border-gray-300 bg-white shadow-lg sm:left-auto sm:w-80 dark:border-zinc-700 dark:bg-black"
-          >
-            <FilterContent />
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+      {/* Mobile: Overlay/popover */}
+      <div className="block md:hidden">
+        <AnimatePresence mode="wait">
+          {isOpen && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={onClose}
+                className="fixed inset-0 z-50 bg-black/50"
+              />
+
+              {/* Panel */}
+              <motion.div
+                initial={{ y: -100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -100, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed top-28 right-4 left-4 z-50 max-h-[70vh] overflow-hidden border border-gray-300 bg-white shadow-lg sm:left-auto sm:w-80 dark:border-zinc-700 dark:bg-black"
+              >
+                <FilterContent />
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
+    </>
   );
 };
 

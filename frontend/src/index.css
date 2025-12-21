@@ -70,9 +70,9 @@ html.lenis body {
 }
 
 @theme {
-  --font-sans: Inter, Roboto, system-ui, sans-serif;
-  --font-special: "Playfair Display", serif;
-  --font-serif: "Noto Serif", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter Variable", Roboto, system-ui, sans-serif;
+  --font-special: "Playfair Display Variable", serif;
+  --font-serif: "Noto Serif Variable", Georgia, "Times New Roman", serif;
   --font-mono: Consolas, "Courier New", monospace;
 
   --color-black-50: #f6f6f6;

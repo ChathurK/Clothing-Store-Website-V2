@@ -6,6 +6,7 @@ import FilterPanel from "../components/products/FilterPanel";
 import ProductGrid from "../components/products/ProductGrid";
 import Pagination from "../components/products/Pagination";
 import CartModal from "../components/products/CartModal";
+import ScrollerToTopBtn from "../components/common/ScrollerToTopBtn";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -16,8 +17,9 @@ const Products = () => {
   // UI States
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [gridSize, setGridSize] = useState(window.innerWidth < 768 ? 2 : 4);
+  const [gridState, setGridState] = useState(() => {
+    return sessionStorage.getItem("gridState") || "comfortable";
+  });
 
   // Filter States
   const [filters, setFilters] = useState({
@@ -33,19 +35,9 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 20;
 
+  // Set document title
   useEffect(() => {
     document.title = "Products - Integral";
-
-    // Handle window resize
-    const handleResize = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      // Reset grid size to default on resize
-      setGridSize(mobile ? 2 : 4);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Fetch products from API
@@ -156,13 +148,15 @@ const Products = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
-  const handleGridSizeChange = () => {
-    if (isMobile) {
-      setGridSize(gridSize === 2 ? 3 : 2);
-    } else {
-      setGridSize(gridSize === 4 ? 6 : 4);
-    }
+  const handleGridStateChange = () => {
+    setGridState((prevState) => {
+      return prevState === "comfortable" ? "compact" : "comfortable";
+    });
   };
+
+  useEffect(() => {
+    sessionStorage.setItem("gridState", gridState);
+  }, [gridState]);
 
   const handleCategoryChange = (category) => {
     setFilters({ ...filters, category });
@@ -185,12 +179,6 @@ const Products = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Debugging logs
-  // console.count('Render')
-  // console.log(products)
-  // console.log(`There ${!products ? "are not" : "are"} products`);
-  // console.log("products length is equal to 0", products.length === 0);
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950">
       {/* Header */}
@@ -202,8 +190,8 @@ const Products = () => {
       <SubHeader
         onFilterToggle={handleFilterToggle}
         isFilterOpen={isFilterOpen}
-        gridSize={gridSize}
-        onGridSizeChange={handleGridSizeChange}
+        gridState={gridState}
+        onGridStateChange={handleGridStateChange}
         activeCategory={filters.category}
         onCategoryChange={handleCategoryChange}
         onSearch={handleSearch}
@@ -213,16 +201,13 @@ const Products = () => {
 
       {/* Main Content */}
       <div className="flex">
-        {/* Filter Panel - Desktop */}
-        {!isMobile && (
-          <FilterPanel
-            isOpen={isFilterOpen}
-            onClose={() => setIsFilterOpen(false)}
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            isMobile={false}
-          />
-        )}
+        {/* Filter Panel - Desktop/Mobile */}
+        <FilterPanel
+          isOpen={isFilterOpen}
+          onClose={() => setIsFilterOpen(false)}
+          filters={filters}
+          onFilterChange={handleFilterChange}
+        />
 
         {/* Products Section */}
         <main className="flex-1 p-4 lg:p-8">
@@ -253,14 +238,14 @@ const Products = () => {
           {/* Products Grid */}
           {!loading && !error && (
             <>
-              <ProductGrid products={currentProducts} gridSize={gridSize} />
+              <ProductGrid products={currentProducts} gridState={gridState} />
 
               {/* Pagination */}
-              <Pagination
+              {/* <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
-              />
+              /> */}
             </>
           )}
 
@@ -283,17 +268,6 @@ const Products = () => {
         </main>
       </div>
 
-      {/* Filter Panel - Mobile */}
-      {isMobile && (
-        <FilterPanel
-          isOpen={isFilterOpen}
-          onClose={() => setIsFilterOpen(false)}
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          isMobile={true}
-        />
-      )}
-
       {/* Footer */}
       <footer className="border-t border-t-gray-300 py-6 dark:border-t-zinc-700">
         <p className="text-center text-xs text-gray-500 dark:text-zinc-500">
@@ -307,6 +281,9 @@ const Products = () => {
         onClose={() => setIsCartOpen(false)}
         cartItems={[]}
       />
+
+      {/* Scroll to Top Button */}
+      <ScrollerToTopBtn percentage={25} />
     </div>
   );
 };

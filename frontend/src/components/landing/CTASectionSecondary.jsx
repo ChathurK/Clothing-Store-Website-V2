@@ -6,7 +6,7 @@ const CTASectionSecondary = () => {
   return (
     <section
       id="cta-secondary"
-      className="flex h-[50vh] items-center bg-black py-16 sm:h-auto md:py-20 lg:py-16 dark:bg-[#0d0d0d]"
+      className="flex h-[50vh] min-h-[50vh] items-center bg-black py-16 sm:h-auto md:py-20 lg:py-16 dark:bg-[#0d0d0d]"
     >
       <div className="mx-auto flex w-full max-w-7xl flex-col px-4 md:items-center">
         {/* Quote */}

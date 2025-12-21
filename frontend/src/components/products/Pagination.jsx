@@ -48,7 +48,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="flex h-10 w-10 items-center justify-center border border-gray-300 transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-gray-700 dark:border-zinc-700 dark:hover:bg-white dark:hover:text-black dark:disabled:hover:bg-transparent dark:disabled:hover:text-zinc-400"
+        className="flex size-10 items-center justify-center border border-gray-300 text-gray-600 transition-colors hover:bg-black hover:text-white active:border-black disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-gray-600 disabled:active:border-gray-300 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-white dark:hover:text-black dark:active:border-white dark:disabled:hover:bg-transparent dark:disabled:hover:text-zinc-400 dark:disabled:active:border-zinc-700"
         aria-label="Previous page"
       >
         <CaretLeftIcon size={18} />
@@ -74,7 +74,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             className={`flex h-10 w-10 items-center justify-center border border-gray-300 text-sm font-medium transition-colors dark:border-zinc-700 ${
               currentPage === page
                 ? "bg-black text-white dark:bg-white dark:text-black"
-                : "hover:bg-gray-100 dark:hover:bg-zinc-800"
+                : "text-gray-600 hover:bg-gray-100 active:border-black dark:text-zinc-400 dark:hover:bg-zinc-800 dark:active:border-white "
             }`}
             aria-label={`Go to page ${page}`}
             aria-current={currentPage === page ? "page" : undefined}
@@ -88,7 +88,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="flex h-10 w-10 items-center justify-center border border-gray-300 transition-colors hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-gray-700 dark:border-zinc-700 dark:hover:bg-white dark:hover:text-black dark:disabled:hover:bg-transparent dark:disabled:hover:text-zinc-400"
+        className="flex size-10 items-center justify-center border border-gray-300 text-gray-600 transition-colors hover:bg-black hover:text-white active:border-black disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-gray-600 disabled:active:border-gray-300 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-white dark:hover:text-black dark:active:border-white dark:disabled:hover:bg-transparent dark:disabled:hover:text-zinc-400 dark:disabled:active:border-zinc-700"
         aria-label="Next page"
       >
         <CaretRightIcon size={18} />

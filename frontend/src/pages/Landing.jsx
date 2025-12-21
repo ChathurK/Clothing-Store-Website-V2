@@ -25,7 +25,7 @@ const Landing = () => {
         <CTASectionSecondary />
       </main>
       <Footer />
-      <ScrollerToTopBtn />
+      <ScrollerToTopBtn percentage={10} />
     </>
   );
 };
