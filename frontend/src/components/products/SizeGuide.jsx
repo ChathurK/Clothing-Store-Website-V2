@@ -4,63 +4,62 @@ import { useEffect } from "react";
 
 const SizeGuide = ({ isOpen, onClose }) => {
   useEffect(() => {
-    if (isOpen) {
-      const scrollY = window.scrollY;
+    const scrolledPosition = window.scrollY;
+    const scrollBarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
 
-      // Lock body scroll
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollY}px`;
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrolledPosition}px`;
+    document.body.style.width = "100%";
+    document.body.style.paddingRight = `${scrollBarWidth}px`;
 
-      return () => {
-        // Restore scroll
-        document.body.style.position = "";
-        document.body.style.top = "";
-        window.scrollTo(0, scrollY);
-      };
-    }
+    // Cleanup function to restore scroll on unmount
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.paddingRight = "";
+      window.scrollTo(0, scrolledPosition);
+    };
   }, [isOpen]);
 
   return (
     <AnimatePresence mode="wait">
-      {isOpen && (
-        <>
-          {/* Backdrop */}
-          {/* <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+      {/* Size Guide Modal */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xs"
+      >
+        <div className="relative bg-white max-md:w-full md:h-11/12 dark:bg-zinc-900">
+          {/* Close Button */}
+          <button
             onClick={onClose}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
-          /> */}
-
-          {/* Size Guide Modal */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xs"
+            className="absolute top-2 right-2 z-10 flex items-center justify-center bg-white p-2 text-gray-700 transition-colors hover:bg-black hover:text-white active:bg-black active:text-white dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-white dark:hover:text-black dark:active:bg-white dark:active:text-black"
+            aria-label="Close size guide"
           >
-            <div className="relative max-h-[90vh] max-w-4xl overflow-auto bg-white dark:bg-zinc-900">
-              {/* Close Button */}
-              <button
-                onClick={onClose}
-                className="absolute top-2 right-2 z-10 flex items-center justify-center border border-gray-300 bg-white p-2 text-gray-700 transition-colors hover:bg-black hover:text-white active:border-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-white dark:hover:text-black dark:active:border-white"
-                aria-label="Close size guide"
-              >
-                <XIcon size={24} />
-              </button>
+            <XIcon size={20} />
+          </button>
 
-              {/* Size Chart Image */}
-              <img
-                src={`${import.meta.env.BASE_URL}/products/size chart.jpg`}
-                alt="Size Chart"
-                className="h-auto w-full object-contain"
-              />
-            </div>
-          </motion.div>
-        </>
-      )}
+          {/* Size Chart Image */}
+          <picture>
+            <source
+              srcSet={`${import.meta.env.BASE_URL}/products/size_chart/Size_Chart_480x480.avif`}
+              type="image/avif"
+            />
+            <img
+              alt="Size Chart"
+              src={`${import.meta.env.BASE_URL}/products/size_chart/Size_Chart_480x480.webp`}
+              className="size-full cursor-default object-contain max-md:scale-125"
+            />
+          </picture>
+        </div>
+      </motion.div>
     </AnimatePresence>
   );
 };

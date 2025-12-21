@@ -156,6 +156,27 @@ html.lenis body {
   background-color: #ffffff36;
   fill-opacity: 1;
 } */
+
+/* Light theme navigation for items-swiper */
+#items-swiper .swiper-button-prev,
+#items-swiper .swiper-button-next {
+  /* background-color: #00000020; */
+}
+#items-swiper .swiper-button-prev:active,
+#items-swiper .swiper-button-next:active {
+  /* background-color: #00000040; */
+}
+
+/* Dark theme navigation for items-swiper */
+.dark #items-swiper .swiper-button-prev,
+.dark #items-swiper .swiper-button-next {
+  /* background-color: #ffffff10; */
+}
+.dark #items-swiper .swiper-button-prev:active,
+.dark #items-swiper .swiper-button-next:active {
+  /* background-color: #ffffff36; */
+}
+
 .swiper-navigation-icon {
 }
 
@@ -174,6 +195,12 @@ html.lenis body {
 .swiper-pagination-bullet-active-main {
   /* background-color: #ffffff !important; */
   /* opacity: 1 !important; */
+}
+#items-swiper > .swiper-pagination {
+  z-index: 20 !important;
+  --swiper-pagination-color: #969696 !important;
+  --swiper-pagination-bullet-inactive-opacity: 1;
+  --swiper-pagination-bullet-inactive-color: #9d9d9dae;
 }
 
 /**

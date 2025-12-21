@@ -11,7 +11,7 @@ function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <LenisScrollProvider>
-        <div className="min-h-screen dark:bg-black">
+        <div id="app" className="min-h-screen dark:bg-black">
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<Auth />} />
