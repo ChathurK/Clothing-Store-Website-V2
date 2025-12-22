@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import {
   FunnelIcon,
-  GridFourIcon,
-  GridNineIcon,
+  SquaresFourIcon,
+  DotsNineIcon,
   MagnifyingGlassIcon,
   ShoppingCartSimpleIcon,
   XIcon,
@@ -12,8 +12,8 @@ import CategorySelector from "./CategorySelector";
 const SubHeader = ({
   onFilterToggle,
   isFilterOpen,
-  gridSize,
-  onGridSizeChange,
+  gridState,
+  onGridStateChange,
   activeCategory,
   onCategoryChange,
   onSearch,
@@ -27,17 +27,12 @@ const SubHeader = ({
   let lastScrollYRef = useRef(window.scrollY);
 
   const categories = ["All", "Men", "Women", "Wearables"];
-
   // Track Product Header visibility
   useEffect(() => {
     const handleScroll = () => {
-      const headerHeight = document.getElementsByTagName("header")[0].offsetHeight;
+      const headerHeight =
+        document.getElementsByTagName("header")[0].offsetHeight;
       const currentScrollY = window.scrollY;
-
-      // console.log("lastScrollYRef", lastScrollYRef);
-      // console.log("currentScrollY", currentScrollY);
-      // console.log("currentScrollY > lastScrollYRef", currentScrollY > lastScrollYRef.current);
-      // console.log(currentScrollY > headerHeight);
 
       if (
         currentScrollY > lastScrollYRef.current &&
@@ -90,33 +85,46 @@ const SubHeader = ({
           {/* Filter Toggle */}
           {/* <button
             onClick={onFilterToggle}
-            className={`group flex h-10 cursor-pointer items-center gap-2 border border-gray-300 px-3 transition-colors ${isFilterOpen ? "bg-black dark:bg-white" : ""} hover:bg-black active:border-black dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-white dark:active:border-white`}
+            className={`group flex h-10 cursor-pointer items-center gap-2 border border-gray-300 px-3 transition-colors ${isFilterOpen ? "bg-black dark:bg-white" : ""} hover:bg-black active:border-black dark:border-zinc-700 dark:hover:bg-white dark:active:border-white`}
             aria-label="Toggle filters"
             title="Toggle filters"
           >
             <FunnelIcon
               size={18}
-              className={`text-gray-700 ${isFilterOpen ? "text-white dark:text-black" : "dark:text-zinc-400"} transition-colors group-hover:text-white dark:group-hover:text-black`}
+              className={`${isFilterOpen ? "text-white dark:text-black" : "text-gray-700 dark:text-zinc-400"} transition-colors group-hover:text-white dark:group-hover:text-black`}
             />
-            <span className="hidden text-sm font-medium sm:inline">
+            <span
+              className={`hidden ${isFilterOpen ? "text-white dark:text-black" : "text-gray-700 dark:text-zinc-400"} text-sm font-medium transition-colors group-hover:text-white sm:inline dark:group-hover:text-black`}
+            >
               Filters
             </span>
           </button> */}
 
           {/* Grid Size Toggle */}
           <button
-            onClick={onGridSizeChange}
-            className="group flex h-10 cursor-pointer items-center gap-2 border border-gray-300 px-3 transition-colors hover:bg-black active:border-black dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-white dark:active:border-white"
+            onClick={onGridStateChange}
+            className="group relative flex h-10 cursor-pointer items-center gap-2 border border-gray-300 px-3 transition-colors hover:bg-black active:border-black dark:border-zinc-700 dark:hover:bg-white dark:active:border-white"
             aria-label="Toggle grid size"
-            title={gridSize === 4 ? "6" : "4"}
+            // title={gridState === "comfortable" ? "Compact" : "Comfortable"}
           >
-            <GridFourIcon
-              size={18}
-              className="text-gray-700 transition-colors group-hover:text-white dark:text-zinc-400 dark:group-hover:text-black"
-            />
-            {/* <span className="hidden text-sm font-medium sm:inline">
-              {gridSize === 4 || gridSize === 2 ? "Compact" : "Wide"}
+            {gridState === "comfortable" ? (
+              <DotsNineIcon
+                size={18}
+                className="text-gray-700 transition-colors group-hover:text-white dark:text-zinc-400 dark:group-hover:text-black"
+              />
+            ) : (
+              <SquaresFourIcon
+                size={18}
+                className="text-gray-700 transition-colors group-hover:text-white dark:text-zinc-400 dark:group-hover:text-black"
+              />
+            )}
+
+            {/* <span className="hidden text-sm font-medium text-gray-700 transition-colors group-hover:text-white sm:inline dark:text-zinc-400 dark:group-hover:text-black">
+              {gridState === "comfortable" ? "Compact" : "Comfortable"}
             </span> */}
+            <span className="pointer-events-none absolute top-full left-full mt-1 ml-1 bg-gray-800/50 p-2 text-xs text-gray-200 opacity-0 transition-opacity delay-200 duration-300 group-hover:opacity-100 group-hover:delay-1000 dark:bg-zinc-800/50 dark:text-zinc-400">
+              {gridState === "comfortable" ? "Compact" : "Comfortable"}
+            </span>
           </button>
         </div>
 
@@ -147,34 +155,6 @@ const SubHeader = ({
             onCategoryChange={onCategoryChange}
           />
         </div>
-
-        {/* Mobile: Category Tabs */}
-        {/* <div className="absolute left-1/2 flex -translate-x-1/2 sm:hidden">
-          <div className="flex gap-1 border border-gray-300 dark:border-zinc-700">
-            <select>
-              {categories.map((category) => (
-                <option
-                  key={category}
-                  value={category}
-                  className="w-full appearance-none rounded-lg border px-3 py-2 text-xs font-medium focus:outline-none"
-                ></option>
-              ))}
-            </select>
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => onCategoryChange(category.toLowerCase())}
-                className={`px-4 py-2 text-xs font-medium transition-colors ${
-                  activeCategory === category.toLowerCase()
-                    ? "bg-black text-white dark:bg-white dark:text-black"
-                    : "text-gray-700 hover:bg-gray-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div> */}
 
         {/* Right: Search & Cart */}
         <div className="flex items-center gap-2">

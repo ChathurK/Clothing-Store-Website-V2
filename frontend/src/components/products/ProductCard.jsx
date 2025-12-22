@@ -69,11 +69,13 @@ const ProductCard = ({ product }) => {
   return (
     <div onClick={handleCardClick} className="group cursor-pointer">
       {/* Image Container */}
-      <div className="relative aspect-3/4 overflow-visible">
+      <div className="relative aspect-square overflow-visible">
         <img
           src={product.image}
+          // src={`https://picsum.photos/1024/1024?${product.id}`}
+          // src={`${import.meta.env.BASE_URL}/products/men/men_product_1_img_1.webp`}
           alt={product.title}
-          className="size-full object-scale-down transition-transform duration-300 group-hover:scale-[102%]"
+          className="size-full object-contain transition-transform duration-300 group-hover:scale-[103%] group-active:scale-[103%]"
           loading="lazy"
         />
 
@@ -96,7 +98,7 @@ const ProductCard = ({ product }) => {
 
       {/* Product Info */}
       <div className="p-3">
-        <h3 className="mb-1 line-clamp-2 text-sm font-serif font-medium text-gray-900 dark:text-white">
+        <h3 className="line-clamp-2 text-center font-serif text-sm font-medium text-gray-900 dark:text-white">
           {product.title}
         </h3>
 
@@ -106,12 +108,12 @@ const ProductCard = ({ product }) => {
           </p>
         )} */}
 
-        <div className="flex items-center justify-between">
-          {/* <span className="text-base font-semibold text-gray-900 dark:text-white">
+        {/* <div className="flex items-center justify-between">
+          <span className="text-base font-semibold text-gray-900 dark:text-white">
             LKR {Math.ceil(product.price).toLocaleString()}
-          </span> */}
+          </span>
 
-          {/* {product.rating && (
+          {product.rating && (
             <div className="flex items-center gap-1">
               <span className="text-xs text-gray-600 dark:text-zinc-400">
                 ⭐ {product.rating?.rate?.toFixed(1)}
@@ -120,8 +122,8 @@ const ProductCard = ({ product }) => {
                 ({product.rating?.count})
               </span>
             </div>
-          )} */}
-        </div>
+          )}
+        </div> */}
       </div>
     </div>
   );

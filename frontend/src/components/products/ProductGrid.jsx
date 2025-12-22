@@ -1,13 +1,11 @@
 import ProductCard from "./ProductCard";
 
-const ProductGrid = ({ products, gridSize }) => {
+const ProductGrid = ({ products, gridState }) => {
   const getGridColumns = () => {
-    // Desktop: 4 or 6 columns
-    // Mobile: 2 or 3 columns
-    if (gridSize === 6) {
-      return "grid-cols-3 md:grid-cols-6"; // Mobile: 3, Desktop: 6
+    if (gridState === "comfortable") {
+      return "grid-cols-2 md:grid-cols-4"; // Mobile: 2, Desktop: 4
     }
-    return "grid-cols-2 md:grid-cols-4"; // Mobile: 2, Desktop: 4 (default)
+    return "grid-cols-3 md:grid-cols-6"; // Mobile: 3, Desktop: 6
   };
 
   if (!products || products.length === 0)
@@ -20,7 +18,7 @@ const ProductGrid = ({ products, gridSize }) => {
     );
 
   return (
-    <div className={`grid ${getGridColumns()} gap-4 lg:gap-6`}>
+    <div className={`grid gap-4 ${getGridColumns()} lg:gap-6`}>
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

@@ -56,15 +56,15 @@ const CategorySelector = ({ categories, activeCategory, onCategoryChange }) => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 z-50 mt-1 w-fit border border-gray-300 shadow-lg dark:border-zinc-700">
+        <div className="absolute top-full left-0 z-50 mt-1 flex w-fit flex-col divide-y divide-gray-300 border border-gray-300 shadow-lg dark:divide-zinc-700 dark:border-zinc-700">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => handleSelect(category)}
               className={`w-full px-3 py-2 text-left text-xs font-medium transition-colors ${
                 activeCategory === category.toLowerCase()
-                  ? "bg-black/60 text-white dark:bg-white/60 dark:text-black"
-                  : "bg-white/60 text-gray-700 hover:bg-gray-100 active:bg-gray-100 dark:bg-black/60 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:active:bg-zinc-800"
+                  ? "bg-black/80 text-white dark:bg-white/90 dark:text-black"
+                  : "bg-white/80 text-gray-700 hover:bg-white/90 active:bg-white/90 dark:bg-black/80 dark:text-zinc-300 dark:hover:bg-black/90 dark:active:bg-black/90"
               }`}
             >
               {category}
