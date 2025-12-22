@@ -223,7 +223,7 @@ const Items = () => {
           </Swiper>
         </div>
 
-        <div className="lg:mx-12 xl:mx-16">
+        <div className="md:sticky md:top-16 md:h-fit md:self-start lg:mx-12 lg:top-20 xl:mx-16">
           {/* Info */}
           <div className="flex flex-col space-y-3">
             <h1 className="font-serif text-2xl font-bold text-black dark:text-white">

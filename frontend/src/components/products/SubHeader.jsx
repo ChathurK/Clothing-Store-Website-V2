@@ -122,7 +122,7 @@ const SubHeader = ({
             {/* <span className="hidden text-sm font-medium text-gray-700 transition-colors group-hover:text-white sm:inline dark:text-zinc-400 dark:group-hover:text-black">
               {gridState === "comfortable" ? "Compact" : "Comfortable"}
             </span> */}
-            <span className="absolute top-full left-full mt-1 ml-1 bg-gray-800/50 p-2 text-xs text-gray-200 opacity-0 transition-opacity delay-200 duration-300 group-hover:opacity-100 group-hover:delay-1000 dark:bg-zinc-800/50 dark:text-zinc-400">
+            <span className="pointer-events-none absolute top-full left-full mt-1 ml-1 bg-gray-800/50 p-2 text-xs text-gray-200 opacity-0 transition-opacity delay-200 duration-300 group-hover:opacity-100 group-hover:delay-1000 dark:bg-zinc-800/50 dark:text-zinc-400">
               {gridState === "comfortable" ? "Compact" : "Comfortable"}
             </span>
           </button>
