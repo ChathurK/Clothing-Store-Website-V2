@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import ProductsHeader from "../components/products/ProductsHeader";
 import SubHeader from "../components/products/SubHeader";
+import SubHeader2 from "../components/products/SubHeaderV2";
 import FilterPanel from "../components/products/FilterPanel";
 import ProductGrid from "../components/products/ProductGrid";
 import CartModal from "../components/products/CartModal";
@@ -182,7 +183,7 @@ const Products = () => {
       <div className="h-16 sm:h-12"></div>
 
       {/* Sub Header */}
-      <SubHeader
+      <SubHeader2
         onFilterToggle={handleFilterToggle}
         isFilterOpen={isFilterOpen}
         gridState={gridState}
