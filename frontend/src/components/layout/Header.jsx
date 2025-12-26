@@ -118,7 +118,7 @@ const Header = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="text-black-700 dark:border-r-black-300 border-r-black dark:text-black-300 flex size-full w-16 items-center justify-center border-r transition-colors hover:bg-black hover:text-white md:w-12 dark:hover:bg-white dark:hover:text-black"
+                className="text-black-700 dark:border-r-black-300 dark:text-black-300 flex size-full w-16 items-center justify-center border-r border-r-black transition-colors duration-300 hover:bg-black hover:text-white md:w-12 dark:hover:bg-white dark:hover:text-black"
               >
                 <social.icon size={20} />
               </a>
@@ -151,18 +151,18 @@ const Header = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="group dark:border-l-black-300 flex h-full w-16 cursor-pointer items-center justify-center border-l transition-colors hover:bg-black md:w-12 dark:hover:bg-white"
+              className="group dark:border-l-black-300 flex h-full w-16 cursor-pointer items-center justify-center border-l transition-colors duration-300 hover:bg-black md:w-12 dark:hover:bg-white"
               aria-label="Toggle theme"
             >
               {theme === "light" ? (
                 <MoonStarsIcon
                   size={20}
-                  className="text-black-700 transition-colors group-hover:text-white"
+                  className="text-black-700 transition-colors duration-300 group-hover:text-white"
                 />
               ) : (
                 <SunIcon
                   size={20}
-                  className="dark:text-black-300 transition-colors group-hover:text-black"
+                  className="dark:text-black-300 transition-colors duration-300 group-hover:text-black"
                 />
               )}
             </button>
@@ -171,15 +171,15 @@ const Header = () => {
             <div className="dark:border-l-black-300 relative h-full w-16 border-l md:w-12">
               <button
                 onClick={handleCartClick}
-                className="group relative flex size-full cursor-pointer items-center justify-center transition-colors hover:bg-black dark:hover:bg-white"
+                className="group relative flex size-full cursor-pointer items-center justify-center transition-colors duration-300 hover:bg-black dark:hover:bg-white"
                 aria-label="Shopping cart"
               >
                 <ShoppingCartSimpleIcon
                   size={20}
-                  className="text-black-700 dark:text-black-300 transition-colors group-hover:text-white dark:group-hover:text-black"
+                  className="text-black-700 dark:text-black-300 rotate-y-180 transition-colors duration-300 group-hover:text-white dark:group-hover:text-black"
                 />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs font-medium text-white dark:bg-white dark:text-black">
+                  <span className="absolute top-0 left-0 flex items-center justify-center bg-black px-[0.2rem] text-xs font-medium text-white dark:bg-white dark:text-black">
                     {cartCount}
                   </span>
                 )}
@@ -213,12 +213,12 @@ const Header = () => {
             <div className="dark:border-l-black-300 relative h-full w-16 border-l md:w-12">
               <button
                 onClick={handleProfileClick}
-                className="group flex size-full cursor-pointer items-center justify-center transition-colors hover:bg-black dark:hover:bg-white"
+                className="group flex size-full cursor-pointer items-center justify-center transition-colors duration-300 hover:bg-black dark:hover:bg-white"
                 aria-label="User profile"
               >
                 <UserCircleIcon
                   size={20}
-                  className="text-black-700 dark:text-black-300 transition-colors group-hover:text-white dark:group-hover:text-black"
+                  className="text-black-700 dark:text-black-300 transition-colors duration-300 group-hover:text-white dark:group-hover:text-black"
                 />
               </button>
 

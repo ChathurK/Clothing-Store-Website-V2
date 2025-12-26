@@ -137,19 +137,19 @@ const SubHeader2 = ({
           {/* Grid Size Toggle */}
           <button
             onClick={onGridStateChange}
-            className="group dark:border-black-300 relative flex h-full w-16 cursor-pointer items-center justify-center gap-2 border-r px-3 transition-colors hover:bg-black active:border-black sm:w-12 dark:hover:bg-white dark:active:border-white"
+            className="group dark:border-black-300 relative flex h-full w-16 cursor-pointer items-center justify-center gap-2 border-r px-3 transition-colors duration-300 hover:bg-black active:bg-black sm:w-12 dark:hover:bg-white dark:active:bg-white"
             aria-label="Toggle grid size"
             // title={gridState === "comfortable" ? "Compact" : "Comfortable"}
           >
             {gridState === "comfortable" ? (
               <MagnifyingGlassMinusIcon
                 size={20}
-                className="text-gray-700 transition-colors group-hover:text-white dark:text-zinc-400 dark:group-hover:text-black"
+                className="text-gray-700 transition-colors duration-300 group-hover:text-white group-active:text-white dark:text-zinc-400 dark:group-hover:text-black dark:group-active:text-black"
               />
             ) : (
               <MagnifyingGlassPlusIcon
                 size={20}
-                className="text-gray-700 transition-colors group-hover:text-white dark:text-zinc-400 dark:group-hover:text-black"
+                className="text-gray-700 transition-colors duration-300 group-hover:text-white group-active:text-white dark:text-zinc-400 dark:group-hover:text-black dark:group-active:text-black"
               />
             )}
 
@@ -179,7 +179,7 @@ const SubHeader2 = ({
                 onClick={() => onCategoryChange(value)}
                 className={`group relative cursor-pointer p-2.5 text-sm font-medium transition-colors ${
                   isActive
-                    ? "text-white dark:text-black"
+                    ? "text-white duration-500 dark:text-black"
                     : "text-gray-700 hover:bg-gray-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
                 }`}
               >
@@ -250,12 +250,12 @@ const SubHeader2 = ({
           {/* Cart */}
           <button
             onClick={onCartClick}
-            className="group dark:border-black-300 relative flex h-full w-16 cursor-pointer items-center justify-center gap-2 border-l px-3 transition-colors hover:bg-black active:border-black sm:w-12 dark:hover:bg-white dark:active:border-white"
+            className="group dark:border-black-300 relative flex h-full w-16 cursor-pointer items-center justify-center gap-2 border-l px-3 transition-colors duration-300 hover:bg-black active:bg-black sm:w-12 dark:hover:bg-white dark:active:bg-white"
             aria-label="Shopping cart"
           >
             <ShoppingCartSimpleIcon
               size={20}
-              className="rotate-y-180 text-gray-700 transition-colors group-hover:text-white dark:text-zinc-400 dark:group-hover:text-black"
+              className="rotate-y-180 text-gray-700 transition-colors duration-300 group-hover:text-white group-active:text-white dark:text-zinc-400 dark:group-hover:text-black dark:group-active:text-black"
             />
             {cartCount > 0 && (
               <span className="absolute top-0 left-0 flex items-center justify-center bg-black px-[0.2rem] text-xs font-medium text-white dark:bg-white dark:text-black">

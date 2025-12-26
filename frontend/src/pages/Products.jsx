@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ProductsHeader from "../components/products/ProductsHeader";
 import SubHeader from "../components/products/SubHeader";
 import SubHeader2 from "../components/products/SubHeaderV2";
+import SubHeader3 from "../components/products/SubHeaderV3";
 import FilterPanel from "../components/products/FilterPanel";
 import ProductGrid from "../components/products/ProductGrid";
 import CartModal from "../components/products/CartModal";
