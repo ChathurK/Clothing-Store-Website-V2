@@ -1,37 +1,48 @@
 /**
  * ScrollerToTopBtn
  *
- * A floating "scroll to top" control that becomes visible after the page is
- * scrolled down a certain distance. When clicked, it smoothly scrolls the
- * window back to the top.
+ * A floating "scroll to top" button that appears when the user scrolls down a specified percentage of the page height.
+ * When clicked, it smoothly scrolls the window back to the top. The button is positioned fixed at the
+ * bottom-right corner of the viewport and features hover/active state animations.
  *
  * @component
- * @returns {JSX.Element|null} The scroll-to-top button element when visible, otherwise null.
+ * @param {Object} props - Component props
+ * @param {number} [props.percentage=10] - The scroll percentage threshold (0-100) at which the button becomes visible
+ * @returns {JSX.Element|null} The scroll-to-top button element when visible (scrolled past the threshold), otherwise null.
+ *
  * @example
  * // Place this somewhere at the root of your app (e.g., in App.jsx)
- * <ScrollerToTopBtn />
+ * import ScrollerToTopBtn from './components/common/ScrollerToTopBtn';
  *
- * @requires React
- * @requires Tailwind CSS (for default styling used in the component)
+ * function App() {
+ *   return (
+ *     <div>
+ *        { Your app content here... }
+ *       <ScrollerToTopBtn percentage={10} />
+ *     </div>
+ *   );
+ * }
+ *
+ * @requires react - React hooks (useState, useEffect)
+ * @requires tailwindcss - For styling classes
  */
 
 import React, { useEffect, useState } from "react";
 
-const ScrollerToTopBtn = () => {
+const ScrollerToTopBtn = ({ percentage = 10 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const carousalElement = document.getElementById("carousel");
-      if (!carousalElement) return;
-
-      const carousalOffsetTop = carousalElement.offsetTop;
+      const height = document.documentElement.scrollHeight;
       const currentScrollY = window.scrollY;
-      // console.log(carousalOffsetTop)
+
+      // console.log(height)
       // console.log(currentScrollY);
+      // console.log((currentScrollY / height) * 100);
 
       // Show button if scrolled past the carousel section
-      if (currentScrollY >= carousalOffsetTop) {
+      if ((currentScrollY / height) * 100 >= percentage) {
         setIsVisible(true);
       } else {
         setIsVisible(false);

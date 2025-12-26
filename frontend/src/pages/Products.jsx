@@ -2,10 +2,11 @@
 import { useEffect, useState } from "react";
 import ProductsHeader from "../components/products/ProductsHeader";
 import SubHeader from "../components/products/SubHeader";
+import SubHeader2 from "../components/products/SubHeaderV2";
 import FilterPanel from "../components/products/FilterPanel";
 import ProductGrid from "../components/products/ProductGrid";
-import Pagination from "../components/products/Pagination";
 import CartModal from "../components/products/CartModal";
+import ScrollerToTopBtn from "../components/common/ScrollerToTopBtn";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -16,8 +17,9 @@ const Products = () => {
   // UI States
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [gridSize, setGridSize] = useState(window.innerWidth < 768 ? 2 : 4);
+  const [gridState, setGridState] = useState(() => {
+    return sessionStorage.getItem("gridState") || "comfortable";
+  });
 
   // Filter States
   const [filters, setFilters] = useState({
@@ -30,22 +32,12 @@ const Products = () => {
   });
 
   // Pagination States
-  const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 20;
+  const [visibleCount, setVisibleCount] = useState(productsPerPage);
 
+  // Set document title
   useEffect(() => {
     document.title = "Products - Integral";
-
-    // Handle window resize
-    const handleResize = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      // Reset grid size to default on resize
-      setGridSize(mobile ? 2 : 4);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Fetch products from API
@@ -139,30 +131,27 @@ const Products = () => {
     }
 
     setFilteredProducts(result);
-    setCurrentPage(1); // Reset to first page when filters change
+    setVisibleCount(productsPerPage); // Reset visible items when filters change
   }, [filters, products]);
 
-  // Pagination
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct,
-  );
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  // Load More batching (20 by 20)
+  const currentProducts = filteredProducts.slice(0, visibleCount);
+  const hasMoreProducts = visibleCount < filteredProducts.length;
 
   // Handlers
   const handleFilterToggle = () => {
     setIsFilterOpen(!isFilterOpen);
   };
 
-  const handleGridSizeChange = () => {
-    if (isMobile) {
-      setGridSize(gridSize === 2 ? 3 : 2);
-    } else {
-      setGridSize(gridSize === 4 ? 6 : 4);
-    }
+  const handleGridStateChange = () => {
+    setGridState((prevState) => {
+      return prevState === "comfortable" ? "compact" : "comfortable";
+    });
   };
+
+  useEffect(() => {
+    sessionStorage.setItem("gridState", gridState);
+  }, [gridState]);
 
   const handleCategoryChange = (category) => {
     setFilters({ ...filters, category });
@@ -180,30 +169,25 @@ const Products = () => {
     setIsCartOpen(true);
   };
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const handleLoadMore = () => {
+    setVisibleCount((prev) =>
+      Math.min(prev + productsPerPage, filteredProducts.length),
+    );
   };
 
-  // Debugging logs
-  // console.count('Render')
-  // console.log(products)
-  // console.log(`There ${!products ? "are not" : "are"} products`);
-  // console.log("products length is equal to 0", products.length === 0);
-
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950">
+    <div id="pg-products" className="min-h-screen bg-gray-50 dark:bg-zinc-950">
       {/* Header */}
       <ProductsHeader />
 
       <div className="h-16 sm:h-12"></div>
 
       {/* Sub Header */}
-      <SubHeader
+      <SubHeader2
         onFilterToggle={handleFilterToggle}
         isFilterOpen={isFilterOpen}
-        gridSize={gridSize}
-        onGridSizeChange={handleGridSizeChange}
+        gridState={gridState}
+        onGridStateChange={handleGridStateChange}
         activeCategory={filters.category}
         onCategoryChange={handleCategoryChange}
         onSearch={handleSearch}
@@ -213,16 +197,13 @@ const Products = () => {
 
       {/* Main Content */}
       <div className="flex">
-        {/* Filter Panel - Desktop */}
-        {!isMobile && (
-          <FilterPanel
-            isOpen={isFilterOpen}
-            onClose={() => setIsFilterOpen(false)}
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            isMobile={false}
-          />
-        )}
+        {/* Filter Panel - Desktop/Mobile */}
+        <FilterPanel
+          isOpen={isFilterOpen}
+          onClose={() => setIsFilterOpen(false)}
+          filters={filters}
+          onFilterChange={handleFilterChange}
+        />
 
         {/* Products Section */}
         <main className="flex-1 p-4 lg:p-8">
@@ -252,47 +233,29 @@ const Products = () => {
 
           {/* Products Grid */}
           {!loading && !error && (
-            <>
-              <ProductGrid products={currentProducts} gridSize={gridSize} />
-
-              {/* Pagination */}
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
-            </>
+            <ProductGrid products={currentProducts} gridState={gridState} />
           )}
 
           {/* Results Count and Load More */}
           {!loading && !error && (
             <div className="mt-4 flex flex-col items-center justify-center gap-2">
               <p className="text-xs text-gray-600 dark:text-zinc-400">
-                Showing {indexOfFirstProduct + 1}-
-                {Math.min(indexOfLastProduct, filteredProducts.length)} of{" "}
+                Showing {filteredProducts.length === 0 ? 0 : 1}-
+                {Math.min(visibleCount, filteredProducts.length)} of{" "}
                 {filteredProducts.length} products
               </p>
               <button
                 type="button"
-                className="cursor-pointer bg-black px-4 py-2 text-sm font-medium text-white active:ring-1 active:ring-black dark:bg-white dark:text-black dark:active:ring-white"
+                onClick={handleLoadMore}
+                disabled={!hasMoreProducts}
+                className="cursor-pointer bg-black px-4 py-2 text-sm font-medium text-white active:ring-1 active:ring-black disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-black dark:active:ring-white"
               >
-                Load More
+                {hasMoreProducts ? "Load More" : "No More Products"}
               </button>
             </div>
           )}
         </main>
       </div>
-
-      {/* Filter Panel - Mobile */}
-      {isMobile && (
-        <FilterPanel
-          isOpen={isFilterOpen}
-          onClose={() => setIsFilterOpen(false)}
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          isMobile={true}
-        />
-      )}
 
       {/* Footer */}
       <footer className="border-t border-t-gray-300 py-6 dark:border-t-zinc-700">
@@ -307,6 +270,9 @@ const Products = () => {
         onClose={() => setIsCartOpen(false)}
         cartItems={[]}
       />
+
+      {/* Scroll to Top Button */}
+      <ScrollerToTopBtn percentage={25} />
     </div>
   );
 };

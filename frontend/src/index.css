@@ -70,9 +70,9 @@ html.lenis body {
 }
 
 @theme {
-  --font-sans: Inter, Roboto, system-ui, sans-serif;
-  --font-special: "Playfair Display", serif;
-  --font-serif: "Noto Serif", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter Variable", Roboto, system-ui, sans-serif;
+  --font-special: "Playfair Display Variable", serif;
+  --font-serif: "Noto Serif Variable", Georgia, "Times New Roman", serif;
   --font-mono: Consolas, "Courier New", monospace;
 
   --color-black-50: #f6f6f6;
@@ -87,7 +87,7 @@ html.lenis body {
   --color-black-900: #3d3d3d;
 
   --animate-carousal: carousal 40s linear infinite;
-  --animate-fadeIn: fadeIn 500ms ease-in;
+  /* --animate-fadeIn: fadeIn 500ms ease-in; */
 }
 
 @keyframes carousal {
@@ -120,31 +120,73 @@ html.lenis body {
   }
 }
 
-/* Swiper carousal customization */
+/* 
+ * Swiper carousal customization
+ */
 .continuous-swiper .swiper-wrapper {
   /* transition-timing-function: linear !important; */
 }
 .content-section-continuous-swiper .swiper-wrapper {
-  transition-timing-function: linear !important;
+  /* transition-timing-function: linear !important; */
+}
+.swiper-slide .animate-fadeIn {
+  animation: fadeIn 500ms ease-in 500ms;
 }
 
-/* Swiper navigation customization */
+/* 
+ * Swiper navigation customization
+ */
 .swiper-button-prev,
 .swiper-button-next {
   /* color: #ffffff !important; */
   fill-opacity: 0.5;
   transition-duration: 300ms;
+  --swiper-navigation-size: 40px;
+  background-color: #ffffff10;
+  border-radius: 2px;
+  padding: 5px;
 }
-
-.swiper-button-prev:hover,
-.swiper-button-next:hover {
-  /* color: #ffffff !important; */
+.swiper-button-prev:active,
+.swiper-button-next:active {
+  background-color: #ffffff36;
   fill-opacity: 1;
 }
+/* .swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background-color: #ffffff36;
+  fill-opacity: 1;
+} */
 
-/* Swiper pagination customization */
+/* Light theme navigation for items-swiper */
+#items-swiper .swiper-button-prev,
+#items-swiper .swiper-button-next {
+  /* background-color: #00000020; */
+}
+#items-swiper .swiper-button-prev:active,
+#items-swiper .swiper-button-next:active {
+  /* background-color: #00000040; */
+}
+
+/* Dark theme navigation for items-swiper */
+.dark #items-swiper .swiper-button-prev,
+.dark #items-swiper .swiper-button-next {
+  /* background-color: #ffffff10; */
+}
+.dark #items-swiper .swiper-button-prev:active,
+.dark #items-swiper .swiper-button-next:active {
+  /* background-color: #ffffff36; */
+}
+
+.swiper-navigation-icon {
+}
+
+/* 
+ * Swiper pagination customization
+ */
 .swiper-pagination {
-  z-index: 50 !important;
+  z-index: 20 !important;
+  --swiper-pagination-bullet-inactive-opacity: 1;
+  --swiper-pagination-bullet-inactive-color: #9d9d9d;
 }
 .swiper-pagination-bullet {
   /* cursor: pointer !important; */
@@ -154,8 +196,18 @@ html.lenis body {
   /* background-color: #ffffff !important; */
   /* opacity: 1 !important; */
 }
+#items-swiper > .swiper-pagination {
+  z-index: 20 !important;
+  --swiper-pagination-color: #969696 !important;
+  --swiper-pagination-bullet-inactive-opacity: 1;
+  --swiper-pagination-bullet-inactive-color: #9d9d9dae;
+}
 
-/* Light mode (default) */
+/**
+  * Theme specific colors
+  * When switching themes, these classes will be applied to the root element (html element)
+  * Therefore, all child elements can access these CSS variables
+  */
 .light {
   --bg-primary: #ffffff;
   --bg-secondary: #f6f6f6;

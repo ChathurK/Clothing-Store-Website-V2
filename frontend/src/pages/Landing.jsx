@@ -21,20 +21,11 @@ const Landing = () => {
         <HeroSection />
         <CTASectionPrimary />
         <CarousalSection />
-
-        {/* For mobile devices */}
-        <div className="block sm:hidden">
-          <ParallaxSectionMobile />
-        </div>
-        {/* For screens larger than small */}
-        <div className="hidden sm:block">
-          <ParallaxSection />
-        </div>
-        
+        <ParallaxSection />
         <CTASectionSecondary />
       </main>
       <Footer />
-      <ScrollerToTopBtn />
+      <ScrollerToTopBtn percentage={10} />
     </>
   );
 };

@@ -5,13 +5,13 @@ const ParallaxSection = () => {
   return (
     <section
       id="parallax"
-      className="flex flex-col gap-y-16 py-16 sm:gap-y-20 md:py-20"
+      className="flex flex-col gap-y-16 py-32 md:gap-y-20 md:py-20"
     >
       {[...Array(7)].map((_, index) => (
         <ParallaxComponent
           key={index}
-          image1Src={`https://picsum.photos/1920/1080?random=${index}`}
-          image2Src={`https://picsum.photos/1920/1080?random=${index}.1`}
+          image1Src={`https://picsum.photos/1280/720?random=${index}`}
+          image2Src={`https://picsum.photos/1280/720?random=${index}.1`}
           leftLarge={index % 2 === 0}
         />
       ))}

@@ -11,6 +11,9 @@
     "deploy": "npm run build && npx gh-pages -d dist"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/noto-serif": "^5.2.9",
+    "@fontsource-variable/playfair-display": "^5.2.8",
     "@phosphor-icons/react": "^2.1.10",
     "@tailwindcss/vite": "^4.1.17",
     "axios": "^1.13.2",
