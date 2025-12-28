@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useFormik, validateYupSchema } from "formik";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import {
   EnvelopeIcon,
@@ -12,16 +13,34 @@ import {
 } from "@phosphor-icons/react";
 import Header from "../components/layout/Header";
 import Footer_Bottom from "../components/layout/Footer/Footer_Bottom";
+import authService from "../services/authService";
 
 const Auth = () => {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   // Update page title based on login/register state
   useEffect(() => {
     document.title = isLogin ? "Login - Integral" : "Register - Integral";
   }, [isLogin]);
+
+  // Handle OAuth callback on component mount
+  useEffect(() => {
+    try {
+      const authData = authService.handleOAuthCallback();
+      if (authData) {
+        // Redirect immediately to home page
+        navigate("/", { replace: true });
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  }, [navigate]);
 
   // Login validation schema
   const loginSchema = Yup.object().shape({
@@ -63,9 +82,20 @@ const Auth = () => {
       password: "",
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
-      console.log("Login:", values);
-      // TODO: Implement login API call
+    onSubmit: async (values) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await authService.login(values);
+        setSuccessMessage(response.message || "Login successful!");
+        setTimeout(() => {
+          navigate("/"); // Redirect to home page
+        }, 1500);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
@@ -79,12 +109,19 @@ const Auth = () => {
     },
     validationSchema: registerSchema,
     onSubmit: async (values) => {
+      setLoading(true);
+      setError(null);
       try {
-        const validatedValues = await validateYupSchema(values, registerSchema);
-        console.log("Validated Values: ", validatedValues);
-        // TODO: Implement registration API call
+        const { confirmPassword, ...registerData } = values;
+        const response = await authService.register(registerData);
+        setSuccessMessage(response.message || "Registration successful!");
+        setTimeout(() => {
+          navigate("/"); // Redirect to home page
+        }, 1500);
       } catch (err) {
-        console.log("Validation Errors: ", err.errors);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     },
   });
@@ -92,8 +129,12 @@ const Auth = () => {
   const currentForm = isLogin ? loginForm : registerForm;
 
   const handleOAuthLogin = (provider) => {
-    console.log(`${provider} OAuth login`);
-    // TODO: Implement OAuth login
+    setError(null);
+    if (provider === "Google") {
+      authService.googleLogin();
+    } else if (provider === "Apple") {
+      authService.appleLogin();
+    }
   };
 
   const toggleAuthMode = () => {
@@ -102,6 +143,8 @@ const Auth = () => {
     registerForm.resetForm();
     setShowPassword(false);
     setShowConfirmPassword(false);
+    setError(null);
+    setSuccessMessage(null);
   };
 
   return (
@@ -120,12 +163,31 @@ const Auth = () => {
               </p>
             </div>
 
+            {/* Error Message */}
+            {error && (
+              <div className="rounded-md bg-red-50 p-4 dark:bg-red-900/20">
+                <p className="text-sm text-red-800 dark:text-red-400">
+                  {error}
+                </p>
+              </div>
+            )}
+
+            {/* Success Message */}
+            {successMessage && (
+              <div className="rounded-md bg-green-50 p-4 dark:bg-green-900/20">
+                <p className="text-sm text-green-800 dark:text-green-400">
+                  {successMessage}
+                </p>
+              </div>
+            )}
+
             {/* OAuth Buttons */}
             <div className="space-y-3">
               <button
                 type="button"
                 onClick={() => handleOAuthLogin("Google")}
-                className="dark:active:border-black-300 flex h-12 w-full items-center justify-center gap-3 border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 active:border-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-gray-300 dark:hover:bg-zinc-800"
+                disabled={loading}
+                className="dark:active:border-black-300 flex h-12 w-full items-center justify-center gap-3 border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 active:border-black disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-gray-300 dark:hover:bg-zinc-800"
               >
                 <GoogleLogoIcon size={20} weight="bold" />
                 Continue with Google
@@ -133,7 +195,8 @@ const Auth = () => {
               <button
                 type="button"
                 onClick={() => handleOAuthLogin("Apple")}
-                className="dark:active:border-black-300 flex h-12 w-full items-center justify-center gap-3 border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 active:border-black dark:border-zinc-700 dark:bg-zinc-900 dark:text-gray-300 dark:hover:bg-zinc-800"
+                disabled={loading}
+                className="dark:active:border-black-300 flex h-12 w-full items-center justify-center gap-3 border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 active:border-black disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-gray-300 dark:hover:bg-zinc-800"
               >
                 <AppleLogoIcon size={20} weight="fill" />
                 Continue with Apple
@@ -366,9 +429,14 @@ const Auth = () => {
               <div className="group relative w-full">
                 <button
                   type="submit"
-                  className="relative z-10 w-full cursor-pointer px-4 py-3 font-medium text-white inset-ring inset-ring-black transition-colors duration-500 group-hover:text-black group-active:text-black focus:outline-none dark:text-black dark:inset-ring-white dark:group-hover:text-white dark:group-active:text-white"
+                  disabled={loading}
+                  className="relative z-10 w-full cursor-pointer px-4 py-3 font-medium text-white inset-ring inset-ring-black transition-colors duration-500 group-hover:text-black group-active:text-black focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:text-black dark:inset-ring-white dark:group-hover:text-white dark:group-active:text-white"
                 >
-                  {isLogin ? "Sign in" : "Create account"}
+                  {loading
+                    ? "Please wait..."
+                    : isLogin
+                      ? "Sign in"
+                      : "Create account"}
                 </button>
                 <div className="absolute top-0 left-0 z-0 h-full w-0 bg-white transition-all duration-500 group-hover:w-full group-active:w-full dark:bg-black" />
                 <div className="absolute top-0 right-0 z-0 h-full w-full bg-black transition-all duration-500 group-hover:w-0 group-active:w-0 dark:bg-white" />
