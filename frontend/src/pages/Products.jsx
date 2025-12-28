@@ -156,6 +156,7 @@ const Products = () => {
 
   const handleCategoryChange = (category) => {
     setFilters({ ...filters, category });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleSearch = (query) => {

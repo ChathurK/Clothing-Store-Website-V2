@@ -1,9 +1,13 @@
 import { AnimatePresence, motion } from "motion/react";
 import { XIcon } from "@phosphor-icons/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const SizeGuide = ({ isOpen, onClose }) => {
+  const modalRef = useRef(null);
+
   useEffect(() => {
+    if (!isOpen) return;
+
     const scrolledPosition = window.scrollY;
     const scrollBarWidth =
       window.innerWidth - document.documentElement.clientWidth;
@@ -15,7 +19,15 @@ const SizeGuide = ({ isOpen, onClose }) => {
     document.body.style.width = "100%";
     document.body.style.paddingRight = `${scrollBarWidth}px`;
 
-    // Cleanup function to restore scroll on unmount
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup function to restore scroll & keydown listener on unmount
     return () => {
       document.body.style.overflow = "";
       document.body.style.position = "";
@@ -23,8 +35,16 @@ const SizeGuide = ({ isOpen, onClose }) => {
       document.body.style.width = "";
       document.body.style.paddingRight = "";
       window.scrollTo(0, scrolledPosition);
+
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
+
+  const handleClickOutside = (e) => {
+    if (e.target === modalRef.current) {
+      onClose();
+    }
+  };
 
   return (
     <AnimatePresence mode="wait">
@@ -34,6 +54,8 @@ const SizeGuide = ({ isOpen, onClose }) => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
+        ref={modalRef}
+        onClick={handleClickOutside}
         className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xs"
       >
         <div className="relative bg-white max-md:w-full md:h-11/12 dark:bg-zinc-900">

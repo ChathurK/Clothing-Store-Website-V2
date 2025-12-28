@@ -10,17 +10,21 @@ const CartModal = ({ isOpen, onClose, cartItems = [] }) => {
   useEffect(() => {
     if (isOpen) {
       const scrollY = window.scrollY;
+      const scrollBarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
 
       // Lock body scroll
       document.body.style.position = "fixed";
       document.body.style.top = `-${scrollY}px`;
       // document.body.style.width = "fixed";
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
 
       return () => {
         // Restore scroll
         document.body.style.position = "";
         document.body.style.top = "";
         // document.body.style.width = "";
+        document.body.style.paddingRight = "";
         window.scrollTo(0, scrollY);
       };
     }

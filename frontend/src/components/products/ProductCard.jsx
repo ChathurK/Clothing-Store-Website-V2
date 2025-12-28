@@ -36,6 +36,11 @@ const ProductCard = ({ product }) => {
     // Save back to localStorage
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
 
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new CustomEvent("favoritesChanged", {
+      detail: { favorites: updatedFavorites }
+    }));
+
     // TODO: Add to favorites logic
 
     // Debug logs

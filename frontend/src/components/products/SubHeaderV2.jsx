@@ -14,6 +14,7 @@ import {
   DressIcon,
   SneakerIcon,
 } from "@phosphor-icons/react";
+import CategoryTabs from "./CategoryTabs";
 import CategorySelector from "./CategorySelector";
 import ToolTip from "../common/ToolTip";
 
@@ -167,38 +168,11 @@ const SubHeader2 = ({
 
         {/* Center: Category Tabs */}
         {/* <div className="absolute left-1/2 hidden -translate-x-1/2 sm:flex"> */}
-        <motion.div layout className="hidden h-full p-1 sm:flex">
-          {categories.map((category) => {
-            const value = category.value;
-            const isActive = activeCategory === value;
-
-            return (
-              <button
-                key={category.key}
-                aria-label={category.label}
-                onClick={() => onCategoryChange(value)}
-                className={`group relative cursor-pointer p-2.5 text-sm font-medium transition-colors ${
-                  isActive
-                    ? "text-white duration-500 dark:text-black"
-                    : "text-gray-700 hover:bg-gray-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
-                }`}
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="activeCategoryTab"
-                    // transition={{ type: "spring"}}
-                    className="pointer-events-none absolute inset-0 bg-black dark:bg-white"
-                  ></motion.span>
-                )}
-                {/* <span className="relative z-10">{category.label}</span> */}
-                <span className="relative z-10 inline-block size-5 align-middle">
-                  {category.icon}
-                </span>
-                <ToolTip text={category.label} position={"bc"} marginY={2} />
-              </button>
-            );
-          })}
-        </motion.div>
+        <CategoryTabs
+          categories={categories}
+          activeCategory={activeCategory}
+          onCategoryChange={onCategoryChange}
+        />
         {/* </div> */}
 
         {/* Center: Category Selector - Mobile */}

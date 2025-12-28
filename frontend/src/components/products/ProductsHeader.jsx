@@ -23,7 +23,9 @@ const ProductsHeader = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showFavoriteDropdown, setShowFavoriteDropdown] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [favoriteCount] = useState(0); // This will be dynamic later
+  const [favoriteCount, setFavoriteCount] = useState(
+    localStorage.getItem("favorites")?.length || 0,
+  ); // This will be dynamic later
   const [isLoggedIn] = useState(false); // This will be dynamic later
   const lastScrollYRef = useRef(window.scrollY);
 
@@ -39,11 +41,15 @@ const ProductsHeader = () => {
     // setFavoriteCount(favoriteCountFromStorage);
 
     const handleScroll = () => {
-      const headerHeight = document.getElementsByTagName("header")[0].offsetHeight;
+      const headerHeight =
+        document.getElementsByTagName("header")[0].offsetHeight;
       const currentScrollY = window.scrollY;
 
       // Show/hide header based on scroll direction
-      if (currentScrollY > lastScrollYRef.current && currentScrollY > headerHeight) {
+      if (
+        currentScrollY > lastScrollYRef.current &&
+        currentScrollY > headerHeight
+      ) {
         // Scrolling down
         setIsVisible(false);
       } else {
@@ -71,6 +77,27 @@ const ProductsHeader = () => {
       return () => document.removeEventListener("click", handleClickOutside);
     }
   }, [showFavoriteDropdown, showProfileDropdown, isMobileMenuOpen]);
+
+  useEffect(() => {
+    const favoriteCountFromStorage = JSON.parse(
+      localStorage.getItem("favorites") || "[]",
+    ).length;
+    setFavoriteCount(favoriteCountFromStorage);
+  }, []);
+
+  // Listen for favorites changes
+  useEffect(() => {
+    const handleFavoritesChange = () => {
+      const favoriteCountFromStorage = JSON.parse(
+        localStorage.getItem("favorites") || "[]",
+      ).length;
+      setFavoriteCount(favoriteCountFromStorage);
+    };
+
+    window.addEventListener("favoritesChanged", handleFavoritesChange);
+    return () =>
+      window.removeEventListener("favoritesChanged", handleFavoritesChange);
+  }, []);
 
   const handleFavoriteClick = (e) => {
     e.stopPropagation();
