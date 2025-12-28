@@ -63,8 +63,9 @@ const CategoryTabs = ({ categories, activeCategory, onCategoryChange }) => {
 const Pill = ({ position }) => {
   return (
     <motion.span
+      initial={{ width: 40, height: 40 }}
       animate={{ ...position }}
-      className="pointer-events-none absolute inset-0 top-1/2 -translate-y-1/2 bg-black dark:bg-white"
+      className="pointer-events-none absolute top-1/2 -translate-y-1/2 bg-black dark:bg-white"
     ></motion.span>
   );
 };

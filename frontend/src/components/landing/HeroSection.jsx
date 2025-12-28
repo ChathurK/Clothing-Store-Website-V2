@@ -5,7 +5,7 @@ const HeroSection = () => {
   const [showLogo, setShowLogo] = useState(true);
 
   // Video url
-  const videoUrl = `${import.meta.env.BASE_URL}/videos/Alaska.mp4`;
+  // const videoUrl = `${import.meta.env.BASE_URL}/videos/Alaska.mp4`;
 
   const handleLogoToggle = () => {
     setShowLogo(!showLogo);
@@ -16,10 +16,19 @@ const HeroSection = () => {
       id="hero"
       className="relative h-[calc(50vh-32px)] w-full overflow-hidden bg-black sm:h-[calc(75vh-48px)] xl:h-[calc(100vh-48px)]"
     >
-      <video className="size-full" muted autoPlay loop preload="auto">
+      {/* <video className="size-full" muted autoPlay loop preload="auto">
         <source src={videoUrl} type="video/mp4" />
         Your browser does not support this video format.
-      </video>
+      </video> */}
+      <iframe
+        width="100%"
+        height="100%"
+        src="https://www.youtube.com/embed/CHSnz0bCaUk?si=umyR-0NFtTexnxSZ&amp;controls=0&amp;autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=CHSnz0bCaUk"
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      ></iframe>
 
       {/* Logo Overlay */}
       {showLogo && (
